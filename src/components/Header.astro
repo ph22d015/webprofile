@@ -2,7 +2,12 @@
 import Icon from './Icon.astro';
 import { NAV, SITE, SOCIAL, sitePath } from '@/consts';
 
-const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const basePath = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const requestedPath = Astro.url.pathname;
+const routePath = basePath && (requestedPath === basePath || requestedPath.startsWith(`${basePath}/`))
+  ? requestedPath.slice(basePath.length) || '/'
+  : requestedPath;
+const path = routePath.replace(/\/+$/, '') || '/';
 const isActive = (href: string) => {
   const h = href.replace(/\/+$/, '') || '/';
   return h === '/' ? path === '/' : path === h || path.startsWith(h + '/');
