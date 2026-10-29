@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro';
 import { Image, getImage } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
+import { sitePath } from '@/consts';
 
 // Drop photos into src/assets/gallery/<album-name>/ — that's it.
 // Album = folder name; caption = file name ("sunset-ridge.jpg" → "Sunset ridge").
@@ -24,7 +25,7 @@ const photos: Photo[] = await Promise.all(
         src: mod.default,
         album: album === 'gallery' ? 'Misc' : nice(album),
         caption: nice(file),
-        full: full.src,
+        full: sitePath(full.src),
         fullW: Number(full.attributes.width),
         fullH: Number(full.attributes.height),
       };
