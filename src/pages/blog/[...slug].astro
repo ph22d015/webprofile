@@ -27,7 +27,7 @@ const ld = {
   description,
   datePublished: pubDate.toISOString(),
   dateModified: (updatedDate ?? pubDate).toISOString(),
-  author: { '@type': 'Person', name: SITE.name, url: Astro.site?.href },
+  author: { '@type': 'Person', name: SITE.name, url: new URL(sitePath('/'), Astro.site).href },
   mainEntityOfPage: url,
   articleSection: category,
   keywords: tags.join(', '),
