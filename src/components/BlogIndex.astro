@@ -2,6 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import PostCard from '@/components/PostCard.astro';
 import { slugify, type Post } from '@/lib/posts';
+import { sitePath } from '@/consts';
 
 interface Props { posts: Post[]; allTags: string[]; activeTag?: string; activeCategory?: string; heading: string; intro: string }
 const { posts, allTags, activeTag, heading, intro } = Astro.props;
@@ -24,9 +25,9 @@ const categories = ['Lab Notes', 'Research', 'Life'] as const;
         {categories.map((c) => <button type="button" data-cat={c} aria-pressed="false">{c}</button>)}
       </div>
       <ul class="tag-list" aria-label="Tags">
-        {activeTag && <li><a class="chip clear" href="/blog/">✕ Clear tag</a></li>}
+        {activeTag && <li><a class="chip clear" href={sitePath("/blog/")}>✕ Clear tag</a></li>}
         {allTags.map((t) => (
-          <li><a class:list={['chip', { on: slugify(t) === activeTag }]} href={`/blog/tag/${slugify(t)}/`}>#{t}</a></li>
+          <li><a class:list={['chip', { on: slugify(t) === activeTag }]} href={sitePath(`/blog/tag/${slugify(t)}/`)}>#{t}</a></li>
         ))}
       </ul>
     </div>
