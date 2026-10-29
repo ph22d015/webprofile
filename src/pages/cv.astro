@@ -5,7 +5,7 @@ import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import Timeline from '@/components/Timeline.tsx';
 import { education, timeline, timelineLabels, coursework, publications } from '@/data/cv';
-import { CV_PDF_PATH } from '@/consts';
+import { CV_PDF_PATH, sitePath } from '@/consts';
 
 // The download button only appears once a PDF actually exists in /public.
 const hasPdf = existsSync(join(process.cwd(), 'public', CV_PDF_PATH));
@@ -24,7 +24,7 @@ const stats = [
       <span class="rule" aria-hidden="true"></span>
       <p>Physics researcher working on computational nanophotonics, active metasurface optimization and chalcogenide phase-change materials, combining thin-film deposition, sub-nanosecond optical characterization and electromagnetic simulation.</p>
       {hasPdf && (
-        <p class="dl"><a class="btn btn-primary" href={CV_PDF_PATH} download><Icon name="download" /> Download PDF</a></p>
+        <p class="dl"><a class="btn btn-primary" href={sitePath(CV_PDF_PATH)} download><Icon name="download" /> Download PDF</a></p>
       )}
     </div>
   </header>
