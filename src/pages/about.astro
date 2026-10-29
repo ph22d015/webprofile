@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import { SITE, SOCIAL } from '@/consts';
+import { SITE, SOCIAL, sitePath } from '@/consts';
 import { hobbies, languages } from '@/data/cv';
 import profile from '@/assets/site/profile.jpg';
 
@@ -43,8 +43,8 @@ const profiles = [
         magnetic measurements.
       </p>
       <p>
-        Outside the lab I read, cook and take photographs — some of which end up in the <a href="/gallery/">gallery</a>, and some
-        of my thinking ends up on the <a href="/blog/">blog</a>.
+        Outside the lab I read, cook and take photographs — some of which end up in the <a href={sitePath("/gallery/")}>gallery</a>, and some
+        of my thinking ends up on the <a href={sitePath("/blog/")}>blog</a>.
       </p>
     </div>
 
