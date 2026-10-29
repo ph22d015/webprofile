@@ -1,6 +1,10 @@
 // Single source of truth for identity, links and SEO defaults.
 // Empty strings hide the corresponding link/icon everywhere on the site.
 
+// Prefix site-local URLs for GitHub Pages project hosting (/webprofile/).
+export const sitePath = (path: string): string =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+
 export const SITE = {
   name: 'Sourav Mondal',
   shortName: 'Sourav',
