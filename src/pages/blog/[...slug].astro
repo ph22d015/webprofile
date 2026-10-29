@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import { SITE } from '@/consts';
+import { SITE, sitePath } from '@/consts';
 import { formatDate, getPosts, readingTime, slugify, type Post } from '@/lib/posts';
 
 export async function getStaticPaths() {
@@ -18,7 +18,7 @@ interface Props { post: Post; newer?: Post; older?: Post }
 const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
 const { title, description, pubDate, updatedDate, category, tags, cover, coverAlt } = post.data;
-const url = new URL(`/blog/${post.id}/`, Astro.site).href;
+const url = new URL(sitePath(`/blog/${post.id}/`), Astro.site).href;
 
 const ld = {
   '@context': 'https://schema.org',
@@ -39,7 +39,7 @@ const ld = {
     <header class="post-hero">
       <Image src={cover} alt="" class="bg" widths={[Math.min(cover.width, 960)]} sizes="100vw" loading="eager" fetchpriority="high" />
       <div class="container inner">
-        <nav class="crumbs" aria-label="Breadcrumb"><a href="/blog/">Blog</a> <span aria-hidden="true">/</span> {category}</nav>
+        <nav class="crumbs" aria-label="Breadcrumb"><a href={sitePath("/blog/")}>Blog</a> <span aria-hidden="true">/</span> {category}</nav>
         <h1>{title}</h1>
         <p class="lead">{description}</p>
         <p class="meta">
@@ -58,12 +58,12 @@ const ld = {
       <footer class="post-foot">
         {tags.length > 0 && (
           <ul class="tags" aria-label="Tags">
-            {tags.map((t) => <li><a class="chip" href={`/blog/tag/${slugify(t)}/`}>#{t}</a></li>)}
+            {tags.map((t) => <li><a class="chip" href={sitePath(`/blog/tag/${slugify(t)}/`)}>#{t}</a></li>)}
           </ul>
         )}
         <nav class="pager" aria-label="More posts">
-          {newer ? <a class="card" href={`/blog/${newer.id}/`}><span>Newer</span>{newer.data.title}</a> : <span />}
-          {older ? <a class="card right" href={`/blog/${older.id}/`}><span>Older</span>{older.data.title}</a> : <span />}
+          {newer ? <a class="card" href={sitePath(`/blog/${newer.id}/`)}><span>Newer</span>{newer.data.title}</a> : <span />}
+          {older ? <a class="card right" href={sitePath(`/blog/${older.id}/`)}><span>Older</span>{older.data.title}</a> : <span />}
         </nav>
       </footer>
     </div>
