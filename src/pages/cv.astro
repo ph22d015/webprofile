@@ -23,8 +23,13 @@ const stats = [
       <h1>CV & Experience</h1>
       <span class="rule" aria-hidden="true"></span>
       <p>Physics researcher working on computational nanophotonics, active metasurface optimization and chalcogenide phase-change materials, combining thin-film deposition, sub-nanosecond optical characterization and electromagnetic simulation.</p>
-      {hasPdf && (
+      {hasPdf ? (
         <p class="dl"><a class="btn btn-primary" href={sitePath(CV_PDF_PATH)} download><Icon name="download" /> Download PDF</a></p>
+      ) : (
+        <p class="dl">
+          <button class="btn btn-primary print-cv" type="button" data-print-cv><Icon name="download" /> Print / Save as PDF</button>
+          <span class="print-hint">Opens your browser’s print dialog. Choose “Save as PDF”.</span>
+        </p>
       )}
     </div>
   </header>
@@ -68,8 +73,21 @@ const stats = [
   </section>
 </Base>
 
+<script>
+  document.querySelector<HTMLButtonElement>('[data-print-cv]')?.addEventListener('click', () => window.print());
+</script>
+
 <style>
-  .dl { margin-top: 24px !important; }
+  .dl { margin-top: 24px !important; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .print-cv { font: inherit; cursor: pointer; }
+  .print-hint { color: var(--ink-3); font-size: 0.9rem; }
+
+  @media print {
+    :global(.site-header), :global(.site-footer), .dl, .hint, .tl-wrap :global(.tl-filters) { display: none !important; }
+    :global(body) { background: #fff !important; color: #111 !important; }
+    :global(.card) { box-shadow: none !important; break-inside: avoid; }
+    .stats { margin-top: 0; }
+  }
   .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: -32px; position: relative; }
   .stat { padding: 18px 20px; display: grid; gap: 2px; }
   .stat strong { font-size: 2rem; line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
