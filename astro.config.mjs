@@ -8,11 +8,11 @@ import rehypeKatex from 'rehype-katex';
 import { unified } from '@astrojs/markdown-remark';
 
 // Change this to your real domain before deploying (used for canonical URLs, sitemap, RSS, OG tags).
-const SITE_URL = process.env.SITE_URL ?? 'https://ph22d015.github.io';
+const SITE_URL = process.env.SITE_URL ?? 'https://msourav.me';
 
 export default defineConfig({
   site: SITE_URL,
-  // This is a project site, published at https://ph22d015.github.io/webprofile/.
+  // This repository is served under the custom domain at https://msourav.me/webprofile/.
   base: '/webprofile',
   trailingSlash: 'ignore',
   output: 'static',
