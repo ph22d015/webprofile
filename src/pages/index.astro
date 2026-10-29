@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import PostCard from '@/components/PostCard.astro';
-import { SITE } from '@/consts';
+import { SITE, sitePath } from '@/consts';
 import { getPosts } from '@/lib/posts';
 
 import hero from '@/assets/site/hero-lab.jpg';
@@ -18,10 +18,10 @@ const posts = (await getPosts()).slice(0, 3);
 const [first, ...rest] = SITE.name.split(' ');
 
 const cards = [
-  { title: 'Research', icon: 'pulse', tone: 'violet', text: 'Optical phase change materials, ultrafast optics, photonic devices, and light–matter interaction.', href: '/research/', cta: 'Explore Research', img: researchImg, imgClass: 'img-dark' },
-  { title: 'Publications', icon: 'doc', tone: 'teal', text: 'Journal articles, conference papers and preprints.', href: '/publications/', cta: 'View Publications', img: pubsImg, imgClass: 'img-light' },
-  { title: 'CV & Experience', icon: 'briefcase', tone: 'amber', text: 'Education, research experience, skills, projects and achievements.', href: '/cv/', cta: 'View CV', img: cvImg, imgClass: 'img-light' },
-  { title: 'Thoughts & Blog', icon: 'pen', tone: 'purple', text: 'Ideas, experiences, reflections on science, life and beyond.', href: '/blog/', cta: 'Read the Blog', img: blogImg, imgClass: 'img-light' },
+  { title: 'Research', icon: 'pulse', tone: 'violet', text: 'Optical phase change materials, ultrafast optics, photonic devices, and light–matter interaction.', href: sitePath('/research/'), cta: 'Explore Research', img: researchImg, imgClass: 'img-dark' },
+  { title: 'Publications', icon: 'doc', tone: 'teal', text: 'Journal articles, conference papers and preprints.', href: sitePath('/publications/'), cta: 'View Publications', img: pubsImg, imgClass: 'img-light' },
+  { title: 'CV & Experience', icon: 'briefcase', tone: 'amber', text: 'Education, research experience, skills, projects and achievements.', href: sitePath('/cv/'), cta: 'View CV', img: cvImg, imgClass: 'img-light' },
+  { title: 'Thoughts & Blog', icon: 'pen', tone: 'purple', text: 'Ideas, experiences, reflections on science, life and beyond.', href: sitePath('/blog/'), cta: 'Read the Blog', img: blogImg, imgClass: 'img-light' },
 ] as const;
 ---
 <Base type="profile">
@@ -40,8 +40,8 @@ const cards = [
         <span class="rule" aria-hidden="true"></span>
         <p class="intro">{SITE.intro}</p>
         <div class="ctas">
-          <a class="btn btn-primary" href="/cv/">View My CV <Icon name="arrow" /></a>
-          <a class="btn btn-ghost" href="/blog/">Read My Blog <Icon name="arrow" /></a>
+          <a class="btn btn-primary" href={sitePath("/cv/")}>View My CV <Icon name="arrow" /></a>
+          <a class="btn btn-ghost" href={sitePath("/blog/")}>Read My Blog <Icon name="arrow" /></a>
         </div>
       </div>
       <div class="hero-aside" aria-hidden="true">
@@ -70,7 +70,7 @@ const cards = [
   <section class="container section recent" aria-labelledby="recent-title">
     <div class="section-head">
       <h2 id="recent-title" class="section-title">Recent Posts</h2>
-      <a class="link-arrow" href="/blog/">View All Posts <Icon name="arrow" /></a>
+      <a class="link-arrow" href={sitePath("/blog/")}>View All Posts <Icon name="arrow" /></a>
     </div>
     <div class="post-grid">
       {posts.map((p) => <PostCard post={p} />)}
