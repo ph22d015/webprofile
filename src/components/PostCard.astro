@@ -22,7 +22,7 @@ const mins = readingTime(post.body);
     <span class:list={['badge', category.replace(/\s+/g, '-').toLowerCase()]}>{category}</span>
   </a>
   <div class="body">
-    <h3><a href={`/blog/${post.id}/`}>{title}</a></h3>
+    <h3><a href={sitePath(`/blog/${post.id}/`)}>{title}</a></h3>
     <p class="meta">
       <span><Icon name="calendar" size={16} /> <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time></span>
       <span><Icon name="clock" size={16} /> {mins} min read</span>
