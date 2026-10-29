@@ -23,7 +23,7 @@
   async function load(): Promise<Entry[]> {
     if (index) return index;
     try {
-      const basePath = import.meta.env.BASE_URL.replace(/\\/+$/, '');
+      const basePath = import.meta.env.BASE_URL.replace(/\/+$/, '');
       const res = await fetch(`${basePath}/search.json`, { credentials: 'same-origin' });
       if (!res.ok) throw new Error(`Search index request failed (${res.status})`);
       const data: unknown = await res.json();
