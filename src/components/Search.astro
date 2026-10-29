@@ -18,12 +18,22 @@
   const input = document.querySelector<HTMLInputElement>('[data-search-input]')!;
   const list = document.querySelector<HTMLUListElement>('[data-search-results]')!;
   let index: Entry[] | null = null;
+  let indexFailed = false;
 
   async function load(): Promise<Entry[]> {
     if (index) return index;
-    const basePath = import.meta.env.BASE_URL.replace(/\\/+$/, '');
-    const res = await fetch(`${basePath}/search.json`, { credentials: 'same-origin' });
-    index = res.ok ? ((await res.json()) as Entry[]) : [];
+    try {
+      const basePath = import.meta.env.BASE_URL.replace(/\\/+$/, '');
+      const res = await fetch(`${basePath}/search.json`, { credentials: 'same-origin' });
+      if (!res.ok) throw new Error(`Search index request failed (${res.status})`);
+      const data: unknown = await res.json();
+      if (!Array.isArray(data)) throw new Error('Search index has an unexpected format');
+      index = data as Entry[];
+    } catch (error) {
+      console.error('Site search could not load its index:', error);
+      indexFailed = true;
+      index = [];
+    }
     return index;
   }
 
@@ -31,6 +41,13 @@
   function render(items: Entry[], q: string) {
     list.replaceChildren();
     if (!q) return;
+    if (indexFailed) {
+      const li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = 'Search is temporarily unavailable. Please use the site navigation.';
+      list.append(li);
+      return;
+    }
     if (!items.length) {
       const li = document.createElement('li');
       li.className = 'empty';
