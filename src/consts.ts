@@ -1,9 +1,17 @@
 // Single source of truth for identity, links and SEO defaults.
 // Empty strings hide the corresponding link/icon everywhere on the site.
 
-// Prefix site-local URLs for GitHub Pages project hosting (/webprofile/).
-export const sitePath = (path: string): string =>
-  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+// Prefix site-local URLs safely for project hosting (/webprofile/) or root hosting.
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/+$/, '');
+export const sitePath = (path: string): string => {
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  // Some Astro-generated URLs may already contain the configured base path.
+  if (BASE_PATH && (normalized === BASE_PATH || normalized.startsWith(`${BASE_PATH}/`))) {
+    return normalized;
+  }
+  if (!BASE_PATH) return normalized;
+  return normalized === '/' ? `${BASE_PATH}/` : `${BASE_PATH}${normalized}`;
+};
 
 export const SITE = {
   name: 'Sourav Mondal',
