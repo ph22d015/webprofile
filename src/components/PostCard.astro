@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import { sitePath } from '@/consts';
 import { formatDate, readingTime, type Post } from '@/lib/posts';
 
 interface Props { post: Post; eager?: boolean }
@@ -9,7 +10,7 @@ const { title, description, pubDate, category, cover, coverAlt } = post.data;
 const mins = readingTime(post.body);
 ---
 <article class="post card">
-  <a class="cover" href={`/blog/${post.id}/`} tabindex="-1" aria-hidden="true">
+  <a class="cover" href={sitePath(`/blog/${post.id}/`)} tabindex="-1" aria-hidden="true">
     <Image
       src={cover}
       alt={coverAlt}
