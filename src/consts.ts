@@ -28,10 +28,10 @@ export const EMAIL = { user: 'sourav.mondal.dongal', domain: 'gmail.com' } as co
 
 // TODO: replace with your real profile URLs. Leave '' to hide a link.
 export const SOCIAL = {
-  linkedin: 'https://www.linkedin.com/in/your-handle',
-  github: 'https://github.com/your-handle',
-  scholar: 'https://scholar.google.com/citations?user=YOUR_ID',
-  researchgate: 'https://www.researchgate.net/profile/Your-Profile',
+  linkedin: '',
+  github: 'https://github.com/ph22d015',
+  scholar: '',
+  researchgate: '',
   orcid: '', // e.g. 'https://orcid.org/0000-0000-0000-0000'
 } as const;
 
