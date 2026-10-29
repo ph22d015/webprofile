@@ -1,0 +1,13 @@
+---
+import BlogIndex from '@/components/BlogIndex.astro';
+import { getPosts } from '@/lib/posts';
+
+const posts = await getPosts();
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+<BlogIndex
+  posts={posts}
+  allTags={allTags}
+  heading="Thoughts & Blog"
+  intro="Lab notes, research ideas and personal reflections on science, life and beyond."
+/>

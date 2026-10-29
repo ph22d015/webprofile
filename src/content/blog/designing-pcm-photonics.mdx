@@ -1,0 +1,48 @@
+---
+title: Designing Photonic Structures with Phase Change Materials
+description: Some thoughts on designing reconfigurable photonic devices using optical PCMs.
+pubDate: 2026-09-18
+category: Research
+tags: [phase-change materials, metasurfaces, thin films]
+cover: ../../assets/blog/pcm-photonics.jpg
+coverAlt: Abstract rendering of optical field fringes around a ring structure
+---
+
+{/* Starter post written from the site template. Rewrite it with your own results and figures. */}
+
+Most photonic components are designed once and then frozen. Phase-change materials (PCMs) break that rule: a chalcogenide film can be switched between an amorphous and a crystalline phase, and both phases are stable at room temperature without power.
+Because the two phases have very different refractive indices, the same structure can be two different optical devices.
+
+## Start from the simplest structure: one film
+
+At normal incidence the amplitude reflection coefficient at an interface between media with complex indices $N_0$ and $N_1$ is
+
+$$
+r_{01} = \frac{N_0 - N_1}{N_0 + N_1}.
+$$
+
+Put a film of thickness $d$ on a substrate and the light picks up a phase on each pass through the film,
+
+$$
+\delta = \frac{2\pi N_1 d}{\lambda},
+$$
+
+and the total reflection becomes (with the convention $N = n + ik$ and time dependence $e^{-i\omega t}$, so that $k > 0$ means absorption)
+
+$$
+r = \frac{r_{01} + r_{12}\, e^{2i\delta}}{1 + r_{01} r_{12}\, e^{2i\delta}}.
+$$
+
+Switching the phase changes $N_1$, which changes both the interface reflection and the round-trip phase. That is why a single film already gives a large reflectance contrast at the right thickness, and why thickness is the first design variable to sweep. You can try this directly in the [interactive thin-film demo](/research/#thin-film-demo).
+
+## The real trade-off is loss
+
+A large change in the real index $\Delta n$ is only useful if the extinction coefficient $k$ stays small in the operating band.
+Classic Ge–Sb–Te compositions give a large contrast but absorb strongly in the crystalline phase at telecom wavelengths, which is ideal for amplitude modulation and poor for low-loss phase shifting.
+Wider-bandgap PCMs such as Ge–Sb–Se–Te, Sb₂S₃ and Sb₂Se₃ trade some index contrast for much lower loss.
+Choosing the material is therefore choosing which device you are building.
+
+## From films to metasurfaces
+
+Patterning the PCM into resonators turns a thickness-tuned film into a metasurface whose resonances shift as the phase changes.
+Intermediate, partially crystallized states add more than two levels, which is where pulse engineering becomes part of the design.

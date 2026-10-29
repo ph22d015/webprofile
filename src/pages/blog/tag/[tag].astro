@@ -1,0 +1,23 @@
+---
+import BlogIndex from '@/components/BlogIndex.astro';
+import { getPosts, slugify, type Post } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+  return tags.map((tag) => ({
+    params: { tag: slugify(tag) },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)), allTags: tags },
+  }));
+}
+
+interface Props { tag: string; posts: Post[]; allTags: string[] }
+const { tag, posts, allTags } = Astro.props;
+---
+<BlogIndex
+  posts={posts}
+  allTags={allTags}
+  activeTag={slugify(tag)}
+  heading={`Posts tagged “${tag}”`}
+  intro={`${posts.length} post${posts.length === 1 ? '' : 's'} about ${tag}.`}
+/>

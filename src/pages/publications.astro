@@ -1,0 +1,70 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
+import PubList from '@/components/PubList.tsx';
+import { publications, myNameVariants } from '@/data/cv';
+import { SOCIAL } from '@/consts';
+
+const ld = publications.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: p.title,
+  name: p.title,
+  datePublished: String(p.year),
+  isPartOf: { '@type': p.type === 'journal' ? 'Periodical' : 'Book', name: p.venue },
+  ...(p.doi ? { sameAs: `https://doi.org/${p.doi}`, identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: p.doi } } : {}),
+  author: { '@id': new URL('/#person', Astro.site).href },
+  keywords: p.tags.join(', '),
+}));
+---
+<Base title="Publications" description="Journal articles and conference papers on phase-change metasurfaces and thermal transport in 2D materials, with BibTeX." jsonLd={ld}>
+  <header class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Publications</p>
+      <h1>Papers & proceedings</h1>
+      <span class="rule" aria-hidden="true"></span>
+      <p>Peer-reviewed journal articles and conference papers. Each entry has copy-ready BibTeX.</p>
+      {SOCIAL.scholar && (
+        <p class="profile-links">
+          <a class="btn btn-ghost" href={SOCIAL.scholar} rel="me noopener noreferrer" target="_blank"><Icon name="scholar" /> Google Scholar</a>
+          {SOCIAL.researchgate && <a class="btn btn-ghost" href={SOCIAL.researchgate} rel="me noopener noreferrer" target="_blank"><Icon name="researchgate" /> ResearchGate</a>}
+        </p>
+      )}
+    </div>
+  </header>
+
+  <section class="container section pub-wrap">
+    <PubList client:load pubs={publications} myNames={myNameVariants} />
+  </section>
+</Base>
+
+<style>
+  .profile-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px !important; }
+  .profile-links :global(.btn) { padding: 9px 18px; }
+  .pub-wrap :global(.pub-toolbar) { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pub-wrap :global(.seg) { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+  .pub-wrap :global(.seg button) { border: 0; background: transparent; padding: 6px 16px; border-radius: 999px; cursor: pointer; color: var(--ink-2); }
+  .pub-wrap :global(.seg button.active) { background: var(--grad); color: #fff; }
+  .pub-wrap :global(.pub-search input) { font: inherit; font-family: var(--font-sans); font-size: 0.95rem; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: min(340px, 80vw); }
+  .pub-wrap :global(.pub-year h2) { font-size: 1.5rem; margin: 32px 0 14px; color: var(--ink-2); }
+  .pub-wrap :global(.pub-year ol) { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .pub-wrap :global(.pub) { padding: 18px 22px; scroll-margin-top: calc(var(--header-h) + 20px); }
+  .pub-wrap :global(.pub:target) { border-color: var(--violet); box-shadow: 0 0 0 3px rgb(123 92 255 / 0.2); }
+  .pub-wrap :global(.pub-head) { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .pub-wrap :global(.badge) { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 999px; }
+  .pub-wrap :global(.badge.journal) { background: var(--teal-bg); color: var(--teal); }
+  .pub-wrap :global(.badge.conference) { background: var(--amber-bg); color: var(--amber); }
+  .pub-wrap :global(.pub h3) { font-size: 1.2rem; margin: 0 0 6px; }
+  .pub-wrap :global(.pub h3 a) { color: var(--ink); text-decoration: none; }
+  .pub-wrap :global(.pub h3 a:hover) { color: var(--violet-ink); text-decoration: underline; }
+  .pub-wrap :global(.pub-authors), .pub-wrap :global(.pub-venue) { margin: 0; color: var(--ink-2); font-size: 1rem; }
+  .pub-wrap :global(.me) { color: var(--ink); }
+  .pub-wrap :global(.pub-actions) { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .pub-wrap :global(.pub-actions button), .pub-wrap :global(.pub-actions a) {
+    font-family: var(--font-sans); font-size: 0.82rem; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--ink); cursor: pointer; text-decoration: none;
+  }
+  .pub-wrap :global(.pub-actions button:hover), .pub-wrap :global(.pub-actions a:hover) { border-color: var(--violet); }
+  .pub-wrap :global(.pub-bib) { margin: 12px 0 0; background: #0d1430; color: #e6e9f7; padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; user-select: all; }
+  .pub-wrap :global(.pub-empty) { color: var(--ink-2); margin-top: 24px; }
+</style>

@@ -1,0 +1,4 @@
+# Report security issues on this site by e-mail (address on the About page).
+Contact: https://sourav-mondal.pages.dev/about/#contact
+Expires: 2027-10-29T00:00:00.000Z
+Preferred-Languages: en

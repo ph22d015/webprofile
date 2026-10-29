@@ -1,0 +1,125 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
+import Timeline from '@/components/Timeline.tsx';
+import { education, timeline, timelineLabels, coursework, publications } from '@/data/cv';
+import { CV_PDF_PATH } from '@/consts';
+
+// The download button only appears once a PDF actually exists in /public.
+const hasPdf = existsSync(join(process.cwd(), 'public', CV_PDF_PATH));
+const stats = [
+  { value: publications.length, label: 'Publications' },
+  { value: timeline.filter((t) => t.kind === 'talk' && t.detail?.includes('Poster')).length, label: 'Conference posters' },
+  { value: 13, label: 'Students mentored' },
+  { value: 124, label: 'AIR, CSIR-NET JRF' },
+];
+---
+<Base title="CV" description="Education, research experience, teaching, conferences and awards of Sourav Mondal, PhD researcher at IIT Madras.">
+  <header class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Curriculum Vitae</p>
+      <h1>CV & Experience</h1>
+      <span class="rule" aria-hidden="true"></span>
+      <p>Physics researcher working on computational nanophotonics, active metasurface optimization and chalcogenide phase-change materials, combining thin-film deposition, sub-nanosecond optical characterization and electromagnetic simulation.</p>
+      {hasPdf && (
+        <p class="dl"><a class="btn btn-primary" href={CV_PDF_PATH} download><Icon name="download" /> Download PDF</a></p>
+      )}
+    </div>
+  </header>
+
+  <section class="container stats" aria-label="At a glance">
+    {stats.map((s) => (
+      <div class="stat card"><strong>{s.value}</strong><span>{s.label}</span></div>
+    ))}
+  </section>
+
+  <section class="container section" aria-labelledby="edu">
+    <h2 id="edu" class="section-title">Education</h2>
+    <div class="edu">
+      {education.map((e) => (
+        <article class="edu-row card">
+          <div class="deg"><strong>{e.degree}</strong> {e.field}{e.status === 'ongoing' && <span class="now">Ongoing</span>}</div>
+          <div class="inst">{e.institution}, {e.place}</div>
+          <div class="score">{e.score}</div>
+          <div class="period">{e.period}</div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section tl-wrap" aria-labelledby="tl">
+    <h2 id="tl" class="section-title">Timeline</h2>
+    <p class="hint">Filter by category. Double-click a category to show only that one.</p>
+    <Timeline client:visible items={timeline} labels={timelineLabels} />
+  </section>
+
+  <section class="container section" aria-labelledby="cw">
+    <h2 id="cw" class="section-title">Graduate coursework</h2>
+    <div class="courses">
+      {coursework.map((c) => (
+        <details class="course card">
+          <summary>{c.title}</summary>
+          <p>{c.body}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .dl { margin-top: 24px !important; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: -32px; position: relative; }
+  .stat { padding: 18px 20px; display: grid; gap: 2px; }
+  .stat strong { font-size: 2rem; line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { color: var(--ink-2); font-size: 0.95rem; }
+  @media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+  .edu { display: grid; gap: 10px; margin-top: 16px; }
+  .edu-row { display: grid; grid-template-columns: 1.1fr 1.6fr 0.6fr 0.7fr; gap: 12px; align-items: center; padding: 14px 20px; }
+  .deg strong { color: var(--violet-ink); }
+  .now { margin-left: 10px; font-family: var(--font-sans); font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: var(--teal-bg); color: var(--teal); vertical-align: 2px; }
+  .inst { color: var(--ink-2); }
+  .score, .period { font-family: var(--font-sans); font-size: 0.92rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .period { text-align: right; }
+  @media (max-width: 760px) { .edu-row { grid-template-columns: 1fr auto; } .inst { grid-column: 1 / -1; order: 3; } .period { text-align: left; } }
+
+  .hint { color: var(--ink-3); font-size: 0.95rem; margin-top: -4px; }
+  .courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-top: 16px; }
+  .course { padding: 14px 18px; }
+  .course summary { cursor: pointer; font-weight: 600; }
+  .course p { margin: 8px 0 0; color: var(--ink-2); }
+
+  /* ---- Timeline island ---- */
+  .tl-wrap :global(.tl-filters) { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 28px; }
+  .tl-wrap :global(.tl-filters button) {
+    display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-sans); font-size: 0.85rem;
+    padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3); cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tl-wrap :global(.tl-filters button.on) { color: var(--ink); border-color: var(--ink-3); }
+  .tl-wrap :global(.tl-all.on) { background: var(--grad); color: #fff !important; border-color: transparent !important; }
+  .tl-wrap :global(.dot) { width: 9px; height: 9px; border-radius: 50%; background: var(--c); opacity: 0.35; }
+  .tl-wrap :global(.on .dot) { opacity: 1; }
+  .tl-wrap :global(.n) { font-size: 0.75rem; color: var(--ink-3); }
+  .tl-wrap :global(.k-education) { --c: #7b5cff; }
+  .tl-wrap :global(.k-research) { --c: #3d7bff; }
+  .tl-wrap :global(.k-teaching) { --c: #12a383; }
+  .tl-wrap :global(.k-talk) { --c: #e0632e; }
+  .tl-wrap :global(.k-award) { --c: #d4a017; }
+
+  .tl-wrap :global(.tl-list) { list-style: none; margin: 0; padding: 0 0 0 28px; position: relative; display: grid; gap: 16px; }
+  .tl-wrap :global(.tl-list::before) { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--violet), var(--blue), transparent); border-radius: 2px; }
+  .tl-wrap :global(.tl-item) { position: relative; animation: tl-in 0.35s ease both; }
+  .tl-wrap :global(.tl-marker) { position: absolute; left: -27px; top: 20px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--c); }
+  .tl-wrap :global(.tl-card) { padding: 16px 20px; border-left: 3px solid var(--c); }
+  .tl-wrap :global(.tl-top) { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.06em; }
+  .tl-wrap :global(.tl-kind) { color: var(--c); text-transform: uppercase; font-weight: 600; }
+  .tl-wrap :global(.tl-when) { color: var(--ink-3); }
+  .tl-wrap :global(.tl-card h3) { font-size: 1.15rem; margin: 6px 0 2px; }
+  .tl-wrap :global(.tl-org) { color: var(--ink-2); margin: 0; font-size: 0.98rem; }
+  .tl-wrap :global(.tl-detail) { margin: 6px 0 0; font-size: 0.95rem; }
+  .tl-wrap :global(.tl-card ul) { margin: 8px 0 0; padding-left: 1.2em; color: var(--ink-2); font-size: 0.97rem; }
+  @keyframes tl-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>

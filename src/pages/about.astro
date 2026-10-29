@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
+import { SITE, SOCIAL } from '@/consts';
+import { hobbies, languages } from '@/data/cv';
+import profile from '@/assets/site/profile.jpg';
+
+const profiles = [
+  { href: SOCIAL.linkedin, label: 'LinkedIn', icon: 'linkedin' },
+  { href: SOCIAL.scholar, label: 'Google Scholar', icon: 'scholar' },
+  { href: SOCIAL.researchgate, label: 'ResearchGate', icon: 'researchgate' },
+  { href: SOCIAL.orcid, label: 'ORCID', icon: 'orcid' },
+  { href: SOCIAL.github, label: 'GitHub', icon: 'github' },
+] as const;
+---
+<Base title="About" description="About Sourav Mondal: PhD researcher in phase-change photonics at IIT Madras, teacher, mentor and photographer." type="profile">
+  <header class="page-hero">
+    <div class="container">
+      <p class="eyebrow">About</p>
+      <h1>Hi, I'm {SITE.shortName}.</h1>
+      <span class="rule" aria-hidden="true"></span>
+      <p>{SITE.role}, {SITE.department}, {SITE.institution}.</p>
+    </div>
+  </header>
+
+  <section class="container section about">
+    <div class="prose">
+      <p>
+        I'm a physics researcher working at the intersection of materials and light. My PhD at IIT Madras focuses on
+        <strong>chalcogenide phase-change materials</strong>: thin films that switch between amorphous and crystalline phases and,
+        with that, change how they interact with light. I grow these films by sputtering, e-beam evaporation and pulsed laser
+        deposition, characterize them structurally and optically, switch them with sub-nanosecond optical pulses on a setup I built,
+        and design <strong>active metasurfaces</strong> that turn that switching into reconfigurable photonic devices.
+      </p>
+      <p>
+        Before IIT Madras I studied physics at Jadavpur University (B.Sc. and M.Sc.), where my M.Sc. project reviewed 2D
+        nanomaterials such as graphene and transition-metal dichalcogenides for plasmonic sensing.
+      </p>
+      <p>
+        Teaching and mentoring are a big part of my work: I've been a teaching assistant for electromagnetism and three
+        undergraduate physics laboratories, mentored 13 B.Sc., M.Sc. and M.Tech students, and serve as a SQUID-VSM operator for
+        magnetic measurements.
+      </p>
+      <p>
+        Outside the lab I read, cook and take photographs — some of which end up in the <a href="/gallery/">gallery</a>, and some
+        of my thinking ends up on the <a href="/blog/">blog</a>.
+      </p>
+    </div>
+
+    <aside class="side">
+      <div class="card me">
+        <Image src={profile} alt={`Portrait of ${SITE.name}`} width={200} height={200} fit="cover" />
+        <h2>{SITE.name}</h2>
+        <p>{SITE.institution}</p>
+        <p class="loc"><Icon name="pin" size={16} /> {SITE.location}</p>
+      </div>
+      <dl class="card facts">
+        <div><dt>Languages</dt><dd>{languages.join(', ')}</dd></div>
+        <div><dt>Interests</dt><dd>{hobbies.join(', ')}</dd></div>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="container section contact" id="contact" aria-labelledby="contact-title">
+    <div class="card contact-card">
+      <div>
+        <h2 id="contact-title">Get in touch</h2>
+        <p>For research collaborations, questions about a paper, or anything else, e-mail is the best way to reach me.</p>
+        <p class="mail">
+          <a class="btn btn-primary" href="#contact" data-mail><Icon name="mail" /> <span data-mail-text>Enable JavaScript to see my e-mail</span></a>
+        </p>
+        <noscript><p>My e-mail is <code>sourav.mondal.dongal [at] gmail [dot] com</code>.</p></noscript>
+      </div>
+      <ul class="profiles">
+        {profiles.filter((p) => p.href).map((p) => (
+          <li><a href={p.href} rel="me noopener noreferrer" target="_blank"><Icon name={p.icon} /> {p.label} <Icon name="external" size={14} /></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Base layout fills hrefs; here we also show the address as the button label.
+  const src = document.querySelector<HTMLElement>('[data-mail-src]');
+  const label = document.querySelector<HTMLElement>('[data-mail-text]');
+  if (src && label) label.textContent = `${src.dataset.u}@${src.dataset.d}`;
+</script>
+
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; align-items: start; }
+  .side { display: grid; gap: 16px; position: sticky; top: calc(var(--header-h) + 20px); }
+  .me { padding: 24px; text-align: center; }
+  .me :global(img) { width: 132px; height: 132px; border-radius: 50%; object-fit: cover; margin: 0 auto 14px; outline: 3px solid var(--violet); outline-offset: 3px; }
+  .me h2 { font-size: 1.3rem; margin: 0 0 4px; }
+  .me p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
+  .loc { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px !important; }
+  .facts { padding: 16px 20px; margin: 0; display: grid; gap: 12px; }
+  .facts dt { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .facts dd { margin: 2px 0 0; }
+  @media (max-width: 900px) { .about { grid-template-columns: 1fr; } .side { position: static; } }
+
+  .contact { padding-top: 0; }
+  .contact-card { padding: clamp(20px, 4vw, 40px); display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
+  .contact-card h2 { font-size: 1.8rem; }
+  .contact-card p { color: var(--ink-2); }
+  .mail { margin-top: 18px !important; }
+  .mail :global(.btn) { word-break: break-all; }
+  .profiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .profiles a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); text-decoration: none; }
+  .profiles a:hover { border-color: var(--violet); }
+  .profiles a :global(svg:last-child) { margin-left: auto; color: var(--ink-3); }
+  @media (max-width: 760px) { .contact-card { grid-template-columns: 1fr; } }
+</style>

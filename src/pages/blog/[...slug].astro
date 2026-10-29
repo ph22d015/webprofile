@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
+import { SITE } from '@/consts';
+import { formatDate, getPosts, readingTime, slugify, type Post } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, category, tags, cover, coverAlt } = post.data;
+const url = new URL(`/blog/${post.id}/`, Astro.site).href;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@type': 'Person', name: SITE.name, url: Astro.site?.href },
+  mainEntityOfPage: url,
+  articleSection: category,
+  keywords: tags.join(', '),
+};
+---
+<Base title={title} description={description} image={cover} imageAlt={coverAlt} type="article"
+  publishedTime={pubDate} modifiedTime={updatedDate} tags={tags} jsonLd={[ld]}>
+  <article>
+    <header class="post-hero">
+      <Image src={cover} alt="" class="bg" widths={[Math.min(cover.width, 960)]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <div class="container inner">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="/blog/">Blog</a> <span aria-hidden="true">/</span> {category}</nav>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
+        <p class="meta">
+          <span><Icon name="calendar" size={16} /> <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time></span>
+          {updatedDate && <span>Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time></span>}
+          <span><Icon name="clock" size={16} /> {readingTime(post.body)} min read</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container layout">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="post-foot">
+        {tags.length > 0 && (
+          <ul class="tags" aria-label="Tags">
+            {tags.map((t) => <li><a class="chip" href={`/blog/tag/${slugify(t)}/`}>#{t}</a></li>)}
+          </ul>
+        )}
+        <nav class="pager" aria-label="More posts">
+          {newer ? <a class="card" href={`/blog/${newer.id}/`}><span>Newer</span>{newer.data.title}</a> : <span />}
+          {older ? <a class="card right" href={`/blog/${older.id}/`}><span>Older</span>{older.data.title}</a> : <span />}
+        </nav>
+      </footer>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post-hero { position: relative; overflow: hidden; background: var(--night); color: var(--on-night); padding: calc(var(--header-h) + 64px) 0 48px; }
+  .post-hero :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; filter: blur(2px); transform: scale(1.04); }
+  .post-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, var(--night) 0%, rgb(7 11 29 / 0.55) 60%, rgb(7 11 29 / 0.7)); }
+  .inner { position: relative; z-index: 1; max-width: 860px; }
+  .crumbs { font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-night-2); margin-bottom: 14px; }
+  .crumbs a { color: #c8bcff; text-decoration: none; }
+  h1 { font-size: clamp(2rem, 4.6vw, 3.1rem); margin-bottom: 12px; }
+  .lead { font-size: 1.2rem; color: #dfe2f5; max-width: 60ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 20px; color: var(--on-night-2); font-size: 0.95rem; margin: 0; }
+  .meta span { display: inline-flex; align-items: center; gap: 7px; }
+  .layout { max-width: 860px; padding: 48px 0 32px; }
+  .post-foot { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 28px; }
+  .tags a { text-decoration: none; }
+  .tags a:hover { border-color: var(--violet); color: var(--violet-ink); }
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pager a { display: grid; gap: 4px; padding: 16px 18px; color: var(--ink); text-decoration: none; font-weight: 600; transition: box-shadow 0.2s ease; }
+  .pager a:hover { box-shadow: var(--shadow-hover); }
+  .pager a span { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .pager .right { text-align: right; }
+  @media (max-width: 620px) { .pager { grid-template-columns: 1fr; } .pager .right { text-align: left; } }
+</style>

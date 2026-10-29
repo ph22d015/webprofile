@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+import { NAV, SITE, SOCIAL } from '@/consts';
+
+const year = new Date().getFullYear();
+const profiles = [
+  { href: SOCIAL.linkedin, label: 'LinkedIn', icon: 'linkedin' },
+  { href: SOCIAL.scholar, label: 'Google Scholar', icon: 'scholar' },
+  { href: SOCIAL.researchgate, label: 'ResearchGate', icon: 'researchgate' },
+  { href: SOCIAL.orcid, label: 'ORCID', icon: 'orcid' },
+  { href: SOCIAL.github, label: 'GitHub', icon: 'github' },
+] as const;
+---
+<footer class="site-footer">
+  <div class="container grid">
+    <div>
+      <a class="brand" href="/"><Icon name="pulse" size={26} /> {SITE.name}</a>
+      <p class="muted">{SITE.department}, {SITE.institution}</p>
+      <p class="muted"><Icon name="pin" size={16} class="inline" /> {SITE.location}</p>
+    </div>
+    <nav aria-label="Footer">
+      <ul class="links">
+        {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/rss.xml"><Icon name="rss" size={15} class="inline" /> RSS</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul class="social">
+        {profiles.filter((p) => p.href).map((p) => (
+          <li>
+            <a href={p.href} rel="me noopener noreferrer" target="_blank" aria-label={p.label}>
+              <Icon name={p.icon} />
+            </a>
+          </li>
+        ))}
+        <li><a href="/about/#contact" data-mail aria-label="Email"><Icon name="mail" /></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container base">
+    <p>© {year} {SITE.name}. Words and photographs are my own unless noted.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--night); color: var(--on-night-2); margin-top: 24px; font-size: 0.95rem; }
+  .grid { display: grid; grid-template-columns: 1.3fr 2fr auto; gap: 32px; padding: 48px 0 32px; align-items: start; }
+  .brand { display: inline-flex; gap: 10px; align-items: center; color: #fff; text-decoration: none; font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; }
+  .brand :global(svg) { color: var(--violet); }
+  .muted { margin: 0 0 4px; }
+  :global(.inline) { display: inline-block; vertical-align: -2px; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px 20px; }
+  .links a, .social a { color: var(--on-night-2); text-decoration: none; }
+  .links a:hover, .social a:hover { color: #fff; }
+  .social { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
+  .social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; }
+  .social a:hover { background: rgb(255 255 255 / 0.08); }
+  .base { border-top: 1px solid rgb(255 255 255 / 0.08); padding: 18px 0 28px; font-size: 0.85rem; }
+  .base p { margin: 0; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>

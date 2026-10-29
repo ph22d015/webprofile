@@ -1,0 +1,38 @@
+---
+title: Building a Pump–Probe Setup in the Lab
+description: Notes and lessons learnt while setting up an ultrafast pump–probe optical system.
+pubDate: 2026-10-02
+category: Lab Notes
+tags: [ultrafast optics, instrumentation, pump-probe]
+cover: ../../assets/blog/pump-probe.jpg
+coverAlt: Green laser beam passing through optical mounts on an optical table
+---
+
+{/* Starter post written from the site template. Rewrite it with your own setup details, numbers and photos. */}
+
+A pump–probe experiment asks a simple question: *how does a material respond in the moments after it is hit by light?*
+A strong **pump** pulse perturbs the sample, and a weaker, delayed **probe** pulse reads out a change in reflectance or transmittance.
+Sweeping the delay maps that change in time.
+
+## The delay line sets the time axis
+
+The delay comes from extra path length. With a retroreflector on a translation stage the beam travels the stage displacement twice, so
+
+$$
+\Delta t = \frac{2\,\Delta x}{c}.
+$$
+
+A 1 mm stage movement gives $\Delta t = 2 \times 10^{-3}\,\text{m} / (3.00 \times 10^{8}\,\text{m s}^{-1}) \approx 6.67\,\text{ps}$.
+The stage resolution therefore sets your finest time step, and its total travel sets the longest window you can observe.
+
+## Things that matter more than they look
+
+- **Spatial overlap.** The probe spot should be smaller than the pump spot so it samples a uniformly excited region. Check both on a camera or with a pinhole at the sample plane.
+- **Pointing stability over the delay range.** If the beam walks as the stage moves, the signal changes for reasons unrelated to the sample. Align the stage axis with the beam before anything else.
+- **Finding time zero.** The pump and probe must overlap in time at a known stage position; a nonlinear crystal (sum-frequency or second-harmonic signal) or a fast-responding reference sample makes this much easier than searching on the real sample.
+- **Detecting small changes.** Pump-induced changes $\Delta R/R$ are often small. Chopping the pump and demodulating the probe signal with a lock-in amplifier at the chopping frequency rejects most of the noise that is not correlated with the pump.
+
+## Why this matters for phase-change materials
+
+In chalcogenide phase-change films the optical constants change strongly between the amorphous and crystalline phases.
+Time-resolved reflectance lets you follow that change as it happens, which is what makes questions about switching speed and intermediate states measurable.

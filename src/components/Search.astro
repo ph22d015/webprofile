@@ -1,0 +1,124 @@
+---
+// Site search: a native <dialog> that lazily loads /search.json (built at compile time).
+// No third-party service, no tracking, no runtime server.
+---
+<dialog class="search" data-search aria-label="Search the site">
+  <form method="dialog" class="box" role="search" data-search-form>
+    <label class="sr-only" for="q">Search posts and pages</label>
+    <input id="q" type="search" placeholder="Search posts, publications, pages…" autocomplete="off" spellcheck="false" maxlength="80" data-search-input />
+    <button type="submit" class="close" value="close" aria-label="Close search">Esc</button>
+  </form>
+  <ul class="results" data-search-results aria-live="polite"></ul>
+</dialog>
+
+<script>
+  type Entry = { t: string; d: string; u: string; k: string; x: string };
+
+  const dlg = document.querySelector<HTMLDialogElement>('[data-search]')!;
+  const input = document.querySelector<HTMLInputElement>('[data-search-input]')!;
+  const list = document.querySelector<HTMLUListElement>('[data-search-results]')!;
+  let index: Entry[] | null = null;
+
+  async function load(): Promise<Entry[]> {
+    if (index) return index;
+    const res = await fetch('/search.json', { credentials: 'same-origin' });
+    index = res.ok ? ((await res.json()) as Entry[]) : [];
+    return index;
+  }
+
+  // Results are built with DOM APIs (textContent), never innerHTML, so indexed text cannot inject markup.
+  function render(items: Entry[], q: string) {
+    list.replaceChildren();
+    if (!q) return;
+    if (!items.length) {
+      const li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = `No results for “${q}”`;
+      list.append(li);
+      return;
+    }
+    for (const it of items.slice(0, 8)) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = it.u;
+      const kind = document.createElement('span');
+      kind.className = 'kind';
+      kind.textContent = it.k;
+      const title = document.createElement('strong');
+      title.textContent = it.t;
+      const desc = document.createElement('span');
+      desc.className = 'desc';
+      desc.textContent = it.d;
+      a.append(kind, title, desc);
+      li.append(a);
+      list.append(li);
+    }
+  }
+
+  function search(q: string, data: Entry[]) {
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    return data
+      .map((e) => {
+        const hay = `${e.t} ${e.d} ${e.x}`.toLowerCase();
+        if (!terms.every((t) => hay.includes(t))) return null;
+        const score = terms.reduce((s, t) => s + (e.t.toLowerCase().includes(t) ? 3 : 0) + (e.d.toLowerCase().includes(t) ? 1 : 0), 0);
+        return { e, score };
+      })
+      .filter((r): r is { e: Entry; score: number } => r !== null)
+      .sort((a, b) => b.score - a.score)
+      .map((r) => r.e);
+  }
+
+  async function open() {
+    dlg.showModal();
+    input.focus();
+    await load();
+  }
+
+  document.querySelectorAll('[data-search-open]').forEach((b) => b.addEventListener('click', open));
+  document.addEventListener('keydown', (e) => {
+    const target = e.target as HTMLElement;
+    const typing = target.closest('input, textarea, [contenteditable="true"]');
+    if ((e.key === '/' && !typing) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) {
+      e.preventDefault();
+      if (!dlg.open) open();
+    }
+  });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => { input.value = ''; list.replaceChildren(); });
+
+  let timer: number | undefined;
+  input.addEventListener('input', () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(async () => {
+      const q = input.value.trim();
+      render(q ? search(q, await load()) : [], q);
+    }, 80);
+  });
+  // Enter jumps to the first result.
+  document.querySelector('[data-search-form]')!.addEventListener('submit', (e) => {
+    const first = list.querySelector('a');
+    if (first && input.value.trim() && (e as SubmitEvent).submitter?.getAttribute('value') !== 'close') {
+      e.preventDefault();
+      window.location.href = first.href;
+    }
+  });
+</script>
+
+<style>
+  .search {
+    width: min(640px, calc(100% - 32px)); margin: 12vh auto auto; padding: 0;
+    border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink);
+    box-shadow: 0 24px 80px rgb(0 0 0 / 0.35);
+  }
+  .search::backdrop { background: rgb(7 11 29 / 0.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .box { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  input { flex: 1; font: inherit; font-size: 1.1rem; padding: 10px 8px; border: 0; background: transparent; color: inherit; outline: none; }
+  .close { font-family: var(--font-sans); font-size: 0.75rem; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+  .results { list-style: none; margin: 0; padding: 6px; max-height: 60vh; overflow: auto; }
+  .results :global(a) { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; color: inherit; text-decoration: none; }
+  .results :global(a:hover), .results :global(a:focus-visible) { background: var(--surface-2); }
+  .results :global(.kind) { font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet-ink); }
+  .results :global(.desc) { color: var(--ink-2); font-size: 0.92rem; }
+  .results :global(.empty) { padding: 16px 12px; color: var(--ink-2); }
+</style>
