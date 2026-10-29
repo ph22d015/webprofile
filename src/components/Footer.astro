@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { NAV, SITE, SOCIAL } from '@/consts';
+import { NAV, SITE, SOCIAL, sitePath } from '@/consts';
 
 const year = new Date().getFullYear();
 const profiles = [
@@ -14,14 +14,14 @@ const profiles = [
 <footer class="site-footer">
   <div class="container grid">
     <div>
-      <a class="brand" href="/"><Icon name="pulse" size={26} /> {SITE.name}</a>
+      <a class="brand" href={sitePath("/")}><Icon name="pulse" size={26} /> {SITE.name}</a>
       <p class="muted">{SITE.department}, {SITE.institution}</p>
       <p class="muted"><Icon name="pin" size={16} class="inline" /> {SITE.location}</p>
     </div>
     <nav aria-label="Footer">
       <ul class="links">
-        {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-        <li><a href="/rss.xml"><Icon name="rss" size={15} class="inline" /> RSS</a></li>
+        {NAV.map((n) => <li><a href={sitePath(n.href)}>{n.label}</a></li>)}
+        <li><a href={sitePath("/rss.xml")}><Icon name="rss" size={15} class="inline" /> RSS</a></li>
       </ul>
     </nav>
     <div>
@@ -33,7 +33,7 @@ const profiles = [
             </a>
           </li>
         ))}
-        <li><a href="/about/#contact" data-mail aria-label="Email"><Icon name="mail" /></a></li>
+        <li><a href={sitePath("/about/#contact")} data-mail aria-label="Email"><Icon name="mail" /></a></li>
       </ul>
     </div>
   </div>
