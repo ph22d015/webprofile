@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import PubList from '@/components/PubList.tsx';
 import { publications, myNameVariants } from '@/data/cv';
-import { SOCIAL } from '@/consts';
+import { SOCIAL, sitePath } from '@/consts';
 
 const ld = publications.map((p) => ({
   '@context': 'https://schema.org',
@@ -13,7 +13,7 @@ const ld = publications.map((p) => ({
   datePublished: String(p.year),
   isPartOf: { '@type': p.type === 'journal' ? 'Periodical' : 'Book', name: p.venue },
   ...(p.doi ? { sameAs: `https://doi.org/${p.doi}`, identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: p.doi } } : {}),
-  author: { '@id': new URL('/#person', Astro.site).href },
+  author: { '@id': new URL(sitePath('/#person'), Astro.site).href },
   keywords: p.tags.join(', '),
 }));
 ---
