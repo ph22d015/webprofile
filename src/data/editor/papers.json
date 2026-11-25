@@ -11,7 +11,9 @@
       "tags": [
         "Metasurfaces",
         "Phase-change materials"
-      ]
+      ],
+      "doi": "10.1117/12.3118467",
+      "url": "http://dx.doi.org/10.1117/12.3118467"
     },
     {
       "id": "mandal2026anisotropic",
@@ -23,7 +25,9 @@
       "tags": [
         "2D materials",
         "Thermal transport"
-      ]
+      ],
+      "doi": "10.1002/advs.77734",
+      "url": "https://doi.org/10.1002/advs.77734"
     },
     {
       "id": "mandal2024low",
@@ -36,7 +40,25 @@
       "tags": [
         "2D materials",
         "Thermal transport"
-      ]
+      ],
+      "doi": "10.1103/PhysRevB.110.195404",
+      "url": "https://doi.org/10.1103/PhysRevB.110.195404"
+    },
+    {
+      "id": "singh2026statistical2",
+      "title": "Predictive modeling of speckle field statistics in phase-change disorder metasurfaces",
+      "authors": "R. K. Singh et al.",
+      "venue": "Optical Modeling and Performance Predictions XVI",
+      "details": "142080",
+      "year": 2026,
+      "type": "conference",
+      "tags": [
+        "Metasurfaces",
+        "Phase Change Materials",
+        "Numerical Modelling"
+      ],
+      "doi": "10.1117/12.3118497",
+      "url": "https://doi.org/10.1117/12.3118497"
     }
   ],
   "myNameVariants": [
