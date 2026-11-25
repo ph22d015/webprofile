@@ -1,0 +1,152 @@
+.optistack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  font-family: var(--font-sans);
+}
+.optistack fieldset,
+.optistack section {
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+}
+.optistack fieldset:nth-child(3),
+.optistack section {
+  grid-column: 1/-1;
+}
+.optistack legend,
+.optistack h3 {
+  font: 600 1.1rem var(--font-serif);
+  color: var(--ink);
+  padding: 0 0.35rem;
+}
+.optistack .controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.7rem;
+}
+.optistack label {
+  min-width: 0;
+  display: grid;
+  gap: 0.25rem;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+}
+.optistack .controls label {
+  flex: 1 1 8rem;
+}
+.optistack input,
+.optistack select,
+.optistack textarea,
+.optistack button {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font: inherit;
+  background: var(--surface);
+  color: var(--ink);
+}
+.optistack textarea {
+  resize: vertical;
+  font-family: monospace;
+}
+.optistack button {
+  width: fit-content;
+  font-size: 0.85rem;
+  color: var(--violet-ink);
+  cursor: pointer;
+  background: var(--surface-2);
+}
+.optistack button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.optistack summary {
+  cursor: pointer;
+}
+.optistack .layer {
+  padding: 0.65rem;
+  border-left: 3px solid var(--violet);
+  background: var(--surface-2);
+}
+.optistack .stack-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  font-size: 0.78rem;
+}
+.optistack .stack-diagram li {
+  background: var(--purple-bg);
+  padding: 0.3rem 0.6rem;
+  border-bottom: 2px solid var(--violet);
+}
+.optistack .stack-diagram li:first-child,
+.optistack .stack-diagram li:last-child {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+.optistack figure {
+  margin: 0;
+}
+.optistack svg {
+  width: 100%;
+  max-height: 330px;
+}
+.optistack svg text {
+  fill: var(--ink-2);
+  font: 12px var(--font-sans);
+}
+.optistack svg line {
+  stroke: var(--line);
+}
+.optistack .line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.optistack .series0 {
+  color: var(--blue-ink);
+}
+.optistack .series1 {
+  color: var(--teal);
+}
+.optistack .series2 {
+  color: var(--amber);
+}
+.optistack figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+.optistack .key::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 1rem;
+  margin-right: 0.3rem;
+  border-top: 3px solid;
+}
+.optistack output {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 800px) {
+  .optistack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

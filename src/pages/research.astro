@@ -6,7 +6,7 @@ import { Content as DemoIntro } from '@/data/editor/demoIntro.md';
 import { Content as DemoNotes } from '@/data/editor/demoNotes.md';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import TmmDemo from '@/components/TmmDemo.tsx';
+import OptiStack from '@/components/OptiStack.tsx';
 import { researchThemes, skills } from '@/data/cv';
 
 const researchCard = siteImage('researchImg');
@@ -15,7 +15,7 @@ const stack = siteImage('stack');
 
 const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stack } as const;
 ---
-<Base title="Research" description="Chalcogenide phase-change thin films, multi-level optical switching and active metasurfaces for reconfigurable nanophotonics. Includes an interactive thin-film reflectance demo.">
+<Base title="Research" description="Chalcogenide phase-change thin films, multi-level optical switching and active metasurfaces for reconfigurable nanophotonics. Includes the OptiStack multilayer thin-film solver.">
   <header class="page-hero">
     <div class="container">
       <p class="eyebrow">{copy.eyebrow}</p>
@@ -47,7 +47,7 @@ const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stac
     </div>
     <div class="lede"><DemoIntro /></div>
     <div class="card demo-card">
-      <TmmDemo client:visible />
+      <OptiStack client:visible />
     </div>
     <div class="fine"><DemoNotes /></div>
   </section>
@@ -86,37 +86,4 @@ const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stac
 
   @media (max-width: 900px) { .themes { grid-template-columns: 1fr; } }
 
-  /* ---- TMM demo (React island renders plain class names) ---- */
-  .demo :global(.tmm) { display: grid; grid-template-columns: 260px minmax(0, 1fr); grid-template-areas: 'c p' 'c r'; gap: 20px 28px; }
-  .demo :global(.tmm-controls) { grid-area: c; display: grid; gap: 14px; align-content: start; }
-  .demo :global(fieldset) { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px 12px; margin: 0; display: grid; gap: 8px; }
-  .demo :global(legend) { font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-2); padding: 0 6px; display: inline-flex; align-items: center; gap: 6px; }
-  .demo :global(.tmm-field) { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: 10px; font-size: 0.95rem; }
-  .demo :global(.tmm-field input), .demo :global(.tmm-field select) {
-    width: 100%; font: inherit; font-family: var(--font-sans); font-size: 0.9rem; padding: 6px 8px; border-radius: 6px;
-    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
-  }
-  .demo :global(.tmm-note) { font-size: 0.8rem; color: var(--ink-3); margin: 0; line-height: 1.4; }
-  .demo :global(.tmm-plot) { grid-area: p; margin: 0; }
-  .demo :global(.tmm-plot svg) { width: 100%; height: auto; }
-  .demo :global(.grid) { stroke: var(--line); stroke-width: 1; }
-  .demo :global(.tick) { fill: var(--ink-3); font-family: var(--font-sans); font-size: 11px; }
-  .demo :global(.axis) { fill: var(--ink-2); font-family: var(--font-sans); font-size: 12px; }
-  .demo :global(.curve-a) { fill: none; stroke: #3d7bff; stroke-width: 2.5; }
-  .demo :global(.curve-c) { fill: none; stroke: #e0632e; stroke-width: 2.5; }
-  .demo :global(.cursor) { stroke: var(--violet); stroke-dasharray: 4 4; stroke-width: 1.5; }
-  .demo :global(.dot-a) { fill: #3d7bff; stroke: var(--surface); stroke-width: 2; }
-  .demo :global(.dot-c) { fill: #e0632e; stroke: var(--surface); stroke-width: 2; }
-  .demo :global(.sw) { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; }
-  .demo :global(.sw-a) { background: #3d7bff; }
-  .demo :global(.sw-c) { background: #e0632e; }
-  .demo :global(.tmm-slider) { display: grid; gap: 6px; margin-top: 6px; font-size: 0.95rem; }
-  .demo :global(.tmm-slider input) { width: 100%; accent-color: var(--violet); }
-  .demo :global(.tmm-readout) { grid-area: r; }
-  .demo :global(.tmm-readout table) { border-collapse: collapse; width: 100%; font-family: var(--font-sans); font-size: 0.92rem; font-variant-numeric: tabular-nums; }
-  .demo :global(.tmm-readout th), .demo :global(.tmm-readout td) { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
-  .demo :global(.tmm-readout thead th) { color: var(--ink-3); font-weight: 500; }
-  .demo :global(.tmm-readout p) { margin: 12px 0 0; font-size: 0.98rem; }
-  .demo :global(.tmm-link) { border: 0; background: none; padding: 0; color: var(--blue-ink); text-decoration: underline; cursor: pointer; }
-  @media (max-width: 860px) { .demo :global(.tmm) { grid-template-columns: 1fr; grid-template-areas: 'p' 'r' 'c'; } }
 </style>

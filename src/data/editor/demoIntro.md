@@ -1,1 +1,1 @@
-Reflectance of an air / PCM film / substrate stack at normal incidence, computed in your browser with the transfer-matrix method (Macleod's characteristic-matrix formulation, *N* = *n* − *ik*). Drag the thickness to find where the amorphous and crystalline phases differ most.
+Build a planar multilayer stack and explore its reflectance, transmittance and absorptance. Edit a material or film to update the spectrum, or switch to an angle sweep at a fixed wavelength.
