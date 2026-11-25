@@ -1,0 +1,108 @@
+.beam-tool {
+  padding: clamp(16px, 3vw, 28px);
+  font-family: var(--font-sans);
+}
+.beam-inputs {
+  display: grid;
+  grid-template-columns: minmax(14rem, 2fr) repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.beam-tool label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.beam-tool input,
+.beam-tool button {
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font: inherit;
+}
+.beam-tool button {
+  cursor: pointer;
+  font-size: 0.86rem;
+}
+.beam-tool button[aria-pressed='true'] {
+  color: var(--violet-ink);
+  border-color: var(--violet);
+}
+.beam-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+.beam-bar strong {
+  overflow-wrap: anywhere;
+  margin-right: auto;
+}
+.beam-bar div {
+  display: flex;
+  gap: 0.4rem;
+}
+.beam-grid,
+.beam-plots {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+.beam-plots {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.beam-tool section,
+.beam-tool figure {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.beam-tool dl {
+  margin: 0;
+}
+.beam-tool dl div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  border-top: 1px solid var(--line);
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+}
+.beam-tool dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.beam-tool canvas {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+.beam-tool small {
+  display: block;
+  min-height: 1.4rem;
+}
+.beam-tool [role='alert'] {
+  margin: 0.8rem 0 0;
+}
+@media (max-width: 850px) {
+  .beam-inputs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .beam-inputs label:first-child {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 640px) {
+  .beam-plots {
+    grid-template-columns: 1fr;
+  }
+}

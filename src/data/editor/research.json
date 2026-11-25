@@ -4,5 +4,7 @@
   "introduction": "Thin film deposition and characterization of Chalcogenide Phase Change Materials (PCMs), with a particular emphasis on switching studies using engineered optical and electrical pulses. Design and development of PCM-based metasurfaces for Reconfigurable, Non-Volatile Photonic Devices.",
   "research_themes": "Research Themes",
   "demoHeading": "OptiStack Solver",
-  "technical_expertise": "Technical Expertise"
+  "technical_expertise": "Technical Expertise",
+  "laserHeading": "Laser Spot Size Calculator",
+  "laserIntro": "Upload a knife-edge scan with position in the first CSV column and transmitted power in the second. Compare the 1/e² beam diameter from a direct error-function fit with a Gaussian fit to the smoothed derivative. Choose the units used in your file."
 }

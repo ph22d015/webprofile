@@ -6,6 +6,7 @@ import { Content as DemoIntro } from '@/data/editor/demoIntro.md';
 import { Content as DemoNotes } from '@/data/editor/demoNotes.md';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
+import LaserSpotCalculator from '@/components/LaserSpotCalculator.tsx';
 import OptiStack from '@/components/OptiStack.tsx';
 import { researchThemes, skills } from '@/data/cv';
 
@@ -50,6 +51,12 @@ const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stac
       <OptiStack client:visible />
     </div>
     <div class="fine"><DemoNotes /></div>
+  </section>
+
+  <section class="container section" id="laser-spot-size" aria-labelledby="laser-heading">
+    <h2 id="laser-heading" class="section-title">{copy.laserHeading}</h2>
+    <p class="lede">{copy.laserIntro}</p>
+    <LaserSpotCalculator client:visible />
   </section>
 
   <section class="container section" aria-labelledby="exp-title">

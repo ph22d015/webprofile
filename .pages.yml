@@ -527,6 +527,14 @@ content:
     label: Research themes
     type: string
     required: true
+  - name: laserHeading
+    label: Laser calculator heading
+    type: string
+    required: true
+  - name: laserIntro
+    label: Laser calculator introduction
+    type: text
+    required: true
   - name: demoHeading
     label: Demo heading
     type: string
