@@ -1,4 +1,6 @@
-I'm a physics researcher working at the intersection of materials and light. My PhD at IIT Madras focuses on **chalcogenide phase-change materials**: thin films that switch between amorphous and crystalline phases and, with that, change how they interact with light. I grow these films by sputtering, e-beam evaporation and pulsed laser deposition, characterize them structurally and optically, switch them with sub-nanosecond optical pulses on a setup I built, and design **active metasurfaces** that turn that switching into reconfigurable photonic devices.
+---
+---
+I'm a physics researcher working at the intersection of materials and light. My PhD at IIT Madras focuses on **Chalcogenide Phase Change Materials**: Thin films that switch between Amorphous and Crystalline phases and, with that, change how they interact with light. I grow these films by sputtering, e-beam evaporation and pulsed laser deposition, characterize them structurally and optically, switch them with sub-nanosecond optical pulses on a setup I built, and design **Active Metasurfaces** that turn that switching into reconfigurable photonic devices.
 
 Before IIT Madras I studied physics at Jadavpur University (B.Sc. and M.Sc.), where my M.Sc. project reviewed 2D nanomaterials such as graphene and transition-metal dichalcogenides for plasmonic sensing.
 
