@@ -38,7 +38,7 @@ export default defineConfig({
       algorithm: 'SHA-256',
       directives: [
         "default-src 'self'",
-        "img-src 'self' data:",
+        "img-src 'self' data: https://hits.sh",
         "font-src 'self'",
         "connect-src 'self'",
         "object-src 'none'",

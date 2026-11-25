@@ -44,6 +44,7 @@ const isActive = (href: string) => {
       <a class="icon-btn hide-sm" href={sitePath("/about/#contact")} data-mail aria-label="Send an email">
         <Icon name="mail" />
       </a>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Dark theme" aria-pressed="false" hidden></button>
       <button class="icon-btn" type="button" data-search-open aria-label="Search the site" aria-haspopup="dialog">
         <Icon name="search" />
       </button>
@@ -71,7 +72,7 @@ const isActive = (href: string) => {
   };
   menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
-  window.matchMedia('(min-width: 1001px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  window.matchMedia('(min-width: 1151px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 </script>
 
 <style>
@@ -107,12 +108,14 @@ const isActive = (href: string) => {
     transition: background-color 0.15s ease;
   }
   .icon-btn:hover { background: rgb(255 255 255 / 0.1); }
+  .theme-toggle { font: 1.45rem/1 system-ui, sans-serif; }
+  .theme-toggle[hidden] { display: none; }
   .menu-btn { display: none; }
   .menu-btn :global(.i-close) { display: none; }
   .menu-open .menu-btn :global(.i-close) { display: block; }
   .menu-open .menu-btn :global(.i-open) { display: none; }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1150px) {
     .menu-btn { display: inline-grid; }
     .actions { margin-left: auto; }
     .nav {

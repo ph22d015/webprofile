@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import { NAV, SITE, SOCIAL, sitePath } from '@/consts';
 
+const onProfile = Astro.url.pathname.replace(/\/+$/, '') === sitePath('/').replace(/\/+$/, '');
 const year = new Date().getFullYear();
 const profiles = [
   { href: SOCIAL.linkedin, label: 'LinkedIn', icon: 'linkedin' },
@@ -39,6 +40,7 @@ const profiles = [
     </div>
   </div>
   <div class="container base">
+    {onProfile && <img src="https://hits.sh/msourav.me/webprofile.svg?label=Profile%20views&amp;color=5b3fe0" alt="Profile views counter" referrerpolicy="no-referrer" class="visit-count" />}
     <p>© {year} {SITE.name}. Words and photographs are my own unless noted.</p>
   </div>
 </footer>
@@ -57,6 +59,7 @@ const profiles = [
   .social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; }
   .social a:hover { background: rgb(255 255 255 / 0.08); }
   .base { border-top: 1px solid rgb(255 255 255 / 0.08); padding: 18px 0 28px; font-size: 0.85rem; }
+  .visit-count { height: 20px; width: auto; margin-bottom: 8px; }
   .base p { margin: 0; }
   @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
 </style>
