@@ -1,0 +1,47 @@
+{
+  "publications": [
+    {
+      "id": "singh2026statistical",
+      "title": "Statistical encoding of light with reconfigurable non-volatile disorder metasurfaces",
+      "authors": "R. K. Singh et al.",
+      "venue": "Optics and Photonics for Information Processing XX",
+      "details": "14216",
+      "year": 2026,
+      "type": "conference",
+      "tags": [
+        "Metasurfaces",
+        "Phase-change materials"
+      ]
+    },
+    {
+      "id": "mandal2026anisotropic",
+      "title": "Unveiling Anisotropic in-Plane Thermal Conductivity and Thermal Expansion Coefficient in Low-Symmetry Few-Layer ReS₂",
+      "authors": "M. Mandal et al.",
+      "venue": "Advanced Science",
+      "year": 2026,
+      "type": "journal",
+      "tags": [
+        "2D materials",
+        "Thermal transport"
+      ]
+    },
+    {
+      "id": "mandal2024low",
+      "title": "Low thermal conductivity in 2H-polytype SnSe₂",
+      "authors": "M. Mandal et al.",
+      "venue": "Physical Review B",
+      "details": "110, 195404",
+      "year": 2024,
+      "type": "journal",
+      "tags": [
+        "2D materials",
+        "Thermal transport"
+      ]
+    }
+  ],
+  "myNameVariants": [
+    "S. Mondal",
+    "Sourav Mondal",
+    "Mondal, S."
+  ]
+}

@@ -1,27 +1,32 @@
 ---
+import { siteImage } from '@/data/siteImages';
+import copy from '@/data/editor/research.json';
 import { Image } from 'astro:assets';
+import { Content as DemoIntro } from '@/data/editor/demoIntro.md';
+import { Content as DemoNotes } from '@/data/editor/demoNotes.md';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import TmmDemo from '@/components/TmmDemo.tsx';
 import { researchThemes, skills } from '@/data/cv';
-import researchCard from '@/assets/site/research-card.jpg';
-import spectrum from '@/assets/site/spectrum.jpg';
-import stack from '@/assets/site/photonic-stack.jpg';
+
+const researchCard = siteImage('researchImg');
+const spectrum = siteImage('spectrum');
+const stack = siteImage('stack');
 
 const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stack } as const;
 ---
 <Base title="Research" description="Chalcogenide phase-change thin films, multi-level optical switching and active metasurfaces for reconfigurable nanophotonics. Includes an interactive thin-film reflectance demo.">
   <header class="page-hero">
     <div class="container">
-      <p class="eyebrow">Research</p>
-      <h1>Reconfigurable light with phase-change materials</h1>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.heading}</h1>
       <span class="rule" aria-hidden="true"></span>
-      <p>I deposit and characterize chalcogenide phase-change thin films, switch them with engineered optical pulses, and design active metasurfaces that use their non-volatile change in refractive index.</p>
+      <p>{copy.introduction}</p>
     </div>
   </header>
 
   <section class="container section">
-    <h2 class="section-title">Research themes</h2>
+    <h2 class="section-title">{copy.research_themes}</h2>
     <div class="themes">
       {researchThemes.map((t, i) => (
         <article class="theme card">
@@ -38,26 +43,17 @@ const images = { 'research-card': researchCard, spectrum, 'photonic-stack': stac
 
   <section class="container section demo" id="thin-film-demo" aria-labelledby="demo-title">
     <div class="section-head">
-      <h2 id="demo-title" class="section-title">Interactive: one PCM film, two optical states</h2>
+      <h2 id="demo-title" class="section-title">{copy.demoHeading}</h2>
     </div>
-    <p class="lede">
-      Reflectance of an air / PCM film / substrate stack at normal incidence, computed in your browser with the transfer-matrix
-      method (Macleod's characteristic-matrix formulation, <i>N</i> = <i>n</i> − <i>ik</i>). Drag the thickness to find where the
-      amorphous and crystalline phases differ most.
-    </p>
+    <div class="lede"><DemoIntro /></div>
     <div class="card demo-card">
       <TmmDemo client:visible />
     </div>
-    <p class="fine">
-      <strong>About the numbers.</strong> The default PCM indices (amorphous 3.9 − 0.05i, crystalline 6.1 − 0.8i) are illustrative,
-      rounded values of the size typically reported for Ge₂Sb₂Te₅ near 1550 nm — not measured data. Replace them with your own
-      ellipsometry fits. The substrate is semi-infinite, so T is the power entering the substrate (no back-surface reflection), and A is the
-      power absorbed in the film (1 − R − T).
-    </p>
+    <div class="fine"><DemoNotes /></div>
   </section>
 
   <section class="container section" aria-labelledby="exp-title">
-    <h2 id="exp-title" class="section-title">Technical expertise</h2>
+    <h2 id="exp-title" class="section-title">{copy.technical_expertise}</h2>
     <div class="skills">
       {skills.map((g) => (
         <article class="skill card">

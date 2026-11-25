@@ -22,6 +22,7 @@ const profiles = [
       <ul class="links">
         {NAV.map((n) => <li><a href={sitePath(n.href)}>{n.label}</a></li>)}
         <li><a href={sitePath("/rss.xml")}><Icon name="rss" size={15} class="inline" /> RSS</a></li>
+        <li><a href={sitePath("/admin/")}>Site admin</a></li>
       </ul>
     </nav>
     <div>

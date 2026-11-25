@@ -1,0 +1,25 @@
+{
+  "recent_posts": "Recent Posts",
+  "cards": {
+    "research": {
+      "title": "Research",
+      "description": "Optical phase change materials, ultrafast optics, photonic devices, and light–matter interaction.",
+      "button": "Explore Research"
+    },
+    "publications": {
+      "title": "Publications",
+      "description": "Journal articles, conference papers and preprints.",
+      "button": "View Publications"
+    },
+    "cv": {
+      "title": "CV & Experience",
+      "description": "Education, research experience, skills, projects and achievements.",
+      "button": "View CV"
+    },
+    "blog": {
+      "title": "Thoughts & Blog",
+      "description": "Ideas, experiences, reflections on science, life and beyond.",
+      "button": "Read the Blog"
+    }
+  }
+}

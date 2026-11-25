@@ -1,0 +1,10 @@
+{
+  "hero": "/src/assets/site/hero-lab.jpg",
+  "profile": "/src/assets/site/profile.jpg",
+  "stack": "/src/assets/site/photonic-stack.jpg",
+  "researchImg": "/src/assets/site/research-card.jpg",
+  "pubsImg": "/src/assets/site/publications.jpg",
+  "cvImg": "/src/assets/site/cv-illustration.jpg",
+  "blogImg": "/src/assets/site/blog-illustration.jpg",
+  "spectrum": "/src/assets/site/spectrum.jpg"
+}

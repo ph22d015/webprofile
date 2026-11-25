@@ -1,8 +1,10 @@
 ---
+import { siteImage } from '@/data/siteImages';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { SITE, SOCIAL, sitePath } from '@/consts';
-import defaultOg from '@/assets/site/hero-lab.jpg';
+
+const defaultOg = siteImage('hero');
 
 export interface SEOProps {
   title?: string;

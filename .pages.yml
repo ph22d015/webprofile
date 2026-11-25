@@ -1,0 +1,730 @@
+media:
+- name: gallery
+  label: Gallery albums
+  input: src/assets/gallery
+  output: /src/assets/gallery
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+  - avif
+- name: covers
+  label: Blog covers
+  input: src/assets/blog
+  output: ../../assets/blog
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+- name: illustrations
+  label: Site photographs and illustrations
+  input: src/assets/site
+  output: /src/assets/site
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+  - avif
+- name: cvPdf
+  label: Downloadable CV
+  input: public/cv
+  output: /webprofile/cv
+  extensions:
+  - pdf
+content:
+- name: identity
+  label: Profile, contact and social links
+  type: file
+  path: src/data/editor/identity.json
+  fields:
+  - name: site
+    label: Site
+    type: object
+    fields:
+    - name: name
+      label: Name
+      type: string
+      required: true
+    - name: shortName
+      label: Short name
+      type: string
+      required: true
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: description
+      label: Description
+      type: text
+      required: true
+    - name: role
+      label: Role
+      type: string
+      required: true
+    - name: department
+      label: Department
+      type: string
+      required: true
+    - name: institution
+      label: Institution
+      type: string
+      required: true
+    - name: institutionUrl
+      label: Institution url
+      type: string
+      required: true
+    - name: location
+      label: Location
+      type: string
+      required: true
+    - name: locale
+      label: Locale
+      type: string
+      required: true
+    - name: eyebrow
+      label: Eyebrow
+      type: string
+      required: true
+      list: true
+    - name: tagline
+      label: Tagline
+      type: string
+      required: true
+      list: true
+    - name: intro
+      label: Intro
+      type: text
+      required: true
+    required: true
+  - name: social
+    label: Social
+    type: object
+    fields:
+    - name: linkedin
+      label: Linkedin
+      type: string
+    - name: github
+      label: Github
+      type: string
+    - name: scholar
+      label: Scholar
+      type: string
+    - name: researchgate
+      label: Researchgate
+      type: string
+    - name: orcid
+      label: Orcid
+      type: string
+    required: true
+  - name: email
+    label: Email
+    type: object
+    fields:
+    - name: user
+      label: User
+      type: string
+      required: true
+    - name: domain
+      label: Domain
+      type: string
+      required: true
+    required: true
+  format: json
+- name: academic
+  label: CV and education
+  type: file
+  path: src/data/editor/academic.json
+  fields:
+  - name: education
+    label: Education
+    type: object
+    fields:
+    - name: degree
+      label: Degree
+      type: string
+      required: true
+    - name: field
+      label: Field
+      type: string
+      required: true
+    - name: institution
+      label: Institution
+      type: string
+      required: true
+    - name: place
+      label: Place
+      type: string
+      required: true
+    - name: score
+      label: Score
+      type: string
+    - name: period
+      label: Period
+      type: string
+      required: true
+    - name: status
+      label: Status
+      type: select
+      options:
+        values:
+        - ongoing
+    required: true
+    list: true
+  - name: timeline
+    label: Timeline
+    type: object
+    fields:
+    - name: kind
+      label: Kind
+      type: select
+      options:
+        values:
+        - education
+        - research
+        - teaching
+        - talk
+        - award
+      required: true
+    - name: start
+      label: Start
+      type: string
+      required: true
+    - name: when
+      label: When
+      type: string
+      required: true
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: org
+      label: Org
+      type: string
+      required: true
+    - name: detail
+      label: Detail
+      type: string
+    - name: points
+      label: Points
+      type: text
+      list: true
+    required: true
+    list: true
+  - name: timelineLabels
+    label: Timeline labels
+    type: object
+    fields:
+    - name: education
+      label: Education
+      type: string
+      required: true
+    - name: research
+      label: Research
+      type: string
+      required: true
+    - name: teaching
+      label: Teaching
+      type: string
+      required: true
+    - name: talk
+      label: Talk
+      type: string
+      required: true
+    - name: award
+      label: Award
+      type: string
+      required: true
+    required: true
+  - name: coursework
+    label: Coursework
+    type: object
+    fields:
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: body
+      label: Body
+      type: string
+      required: true
+    required: true
+    list: true
+  format: json
+- name: papers
+  label: Publication list
+  type: file
+  path: src/data/editor/papers.json
+  fields:
+  - name: publications
+    label: Publications
+    type: object
+    fields:
+    - name: id
+      label: Id
+      type: string
+      required: true
+    - name: title
+      label: Title
+      type: text
+      required: true
+    - name: authors
+      label: Authors
+      type: string
+      required: true
+    - name: venue
+      label: Venue
+      type: string
+      required: true
+    - name: details
+      label: Details
+      type: string
+    - name: year
+      label: Year
+      type: number
+      required: true
+    - name: type
+      label: Type
+      type: select
+      options:
+        values:
+        - journal
+        - conference
+      required: true
+    - name: tags
+      label: Tags
+      type: string
+      required: true
+      list: true
+    - name: doi
+      type: string
+    - name: url
+      type: string
+    required: true
+    list: true
+  - name: myNameVariants
+    label: My name variants
+    type: string
+    required: true
+    list: true
+  format: json
+- name: expertise
+  label: Research themes and skills
+  type: file
+  path: src/data/editor/expertise.json
+  fields:
+  - name: researchThemes
+    label: Research themes
+    type: object
+    fields:
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: body
+      label: Body
+      type: text
+      required: true
+    - name: image
+      label: Image
+      type: select
+      options:
+        values:
+        - research-card
+        - spectrum
+        - photonic-stack
+      required: true
+    required: true
+    list: true
+  - name: skills
+    label: Skills
+    type: object
+    fields:
+    - name: group
+      label: Group
+      type: string
+      required: true
+    - name: icon
+      label: Icon
+      type: select
+      options:
+        values:
+        - flask
+        - microscope
+        - laser
+        - code
+        - cube
+      required: true
+    - name: items
+      label: Items
+      type: string
+      required: true
+      list: true
+    required: true
+    list: true
+  format: json
+- name: interests
+  label: Languages and interests
+  type: file
+  path: src/data/editor/interests.json
+  fields:
+  - name: languages
+    label: Languages
+    type: string
+    required: true
+    list: true
+  - name: hobbies
+    label: Hobbies
+    type: string
+    required: true
+    list: true
+  format: json
+- name: biography
+  label: About · biography
+  type: file
+  path: src/data/editor/biography.md
+  format: yaml-frontmatter
+  fields:
+  - name: body
+    type: rich-text
+- name: demoIntro
+  label: Research · demo introduction
+  type: file
+  path: src/data/editor/demoIntro.md
+  format: yaml-frontmatter
+  fields:
+  - name: body
+    type: rich-text
+- name: demoNotes
+  label: Research · model notes
+  type: file
+  path: src/data/editor/demoNotes.md
+  format: yaml-frontmatter
+  fields:
+  - name: body
+    type: rich-text
+- name: home
+  label: Home page
+  type: file
+  path: src/data/editor/home.json
+  fields:
+  - name: recent_posts
+    label: Recent posts
+    type: string
+    required: true
+  - name: cards
+    label: Cards
+    type: object
+    fields:
+    - name: research
+      label: Research
+      type: object
+      fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: text
+        required: true
+      - name: button
+        label: Button
+        type: string
+        required: true
+      required: true
+    - name: publications
+      label: Publications
+      type: object
+      fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: string
+        required: true
+      - name: button
+        label: Button
+        type: string
+        required: true
+      required: true
+    - name: cv
+      label: Cv
+      type: object
+      fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: string
+        required: true
+      - name: button
+        label: Button
+        type: string
+        required: true
+      required: true
+    - name: blog
+      label: Blog
+      type: object
+      fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: string
+        required: true
+      - name: button
+        label: Button
+        type: string
+        required: true
+      required: true
+    required: true
+  format: json
+- name: about
+  label: About page
+  type: file
+  path: src/data/editor/about.json
+  fields:
+  - name: eyebrow
+    label: Eyebrow
+    type: string
+    required: true
+  - name: get_in_touch
+    label: Get in touch
+    type: string
+    required: true
+  - name: introduction
+    label: Introduction
+    type: text
+    required: true
+  format: json
+- name: research
+  label: Research page
+  type: file
+  path: src/data/editor/research.json
+  fields:
+  - name: eyebrow
+    label: Eyebrow
+    type: string
+    required: true
+  - name: heading
+    label: Heading
+    type: string
+    required: true
+  - name: introduction
+    label: Introduction
+    type: text
+    required: true
+  - name: research_themes
+    label: Research themes
+    type: string
+    required: true
+  - name: demoHeading
+    label: Demo heading
+    type: string
+    required: true
+  - name: technical_expertise
+    label: Technical expertise
+    type: string
+    required: true
+  format: json
+- name: publications
+  label: Publications page
+  type: file
+  path: src/data/editor/publications.json
+  fields:
+  - name: eyebrow
+    label: Eyebrow
+    type: string
+    required: true
+  - name: heading
+    label: Heading
+    type: string
+    required: true
+  - name: introduction
+    label: Introduction
+    type: string
+    required: true
+  format: json
+- name: cv
+  label: Cv page
+  type: file
+  path: src/data/editor/cv.json
+  fields:
+  - name: eyebrow
+    label: Eyebrow
+    type: string
+    required: true
+  - name: heading
+    label: Heading
+    type: string
+    required: true
+  - name: introduction
+    label: Introduction
+    type: text
+    required: true
+  - name: education
+    label: Education
+    type: string
+    required: true
+  - name: timeline
+    label: Timeline
+    type: string
+    required: true
+  - name: timelineHint
+    label: Timeline instructions
+    type: string
+    required: true
+  - name: graduate_coursework
+    label: Graduate coursework
+    type: string
+    required: true
+  - name: studentsMentored
+    label: Students mentored
+    type: number
+    required: true
+  - name: examRank
+    label: Exam rank
+    type: number
+    required: true
+  format: json
+- name: gallery
+  label: Gallery page
+  type: file
+  path: src/data/editor/gallery.json
+  fields:
+  - name: eyebrow
+    label: Eyebrow
+    type: string
+    required: true
+  - name: heading
+    label: Heading
+    type: string
+    required: true
+  - name: intro
+    label: Introduction
+    type: string
+    required: true
+  - name: no_photos_yet
+    label: No photos yet
+    type: string
+    required: true
+  format: json
+- name: blog
+  label: Blog page
+  type: file
+  path: src/data/editor/blog.json
+  fields:
+  - name: heading
+    label: Heading
+    type: string
+    required: true
+  - name: intro
+    label: Intro
+    type: string
+    required: true
+  format: json
+- name: posts
+  label: Blog posts
+  type: collection
+  path: src/content/blog
+  format: yaml-frontmatter
+  filename: '{primary}.mdx'
+  fields:
+  - name: title
+    type: string
+    required: true
+  - name: description
+    type: text
+    required: true
+  - name: pubDate
+    type: date
+    required: true
+  - name: category
+    type: select
+    required: true
+    options:
+      values:
+      - Lab Notes
+      - Research
+      - Life
+  - name: cover
+    type: image
+    required: true
+    options:
+      media: covers
+  - name: coverAlt
+    type: string
+    required: true
+  - name: body
+    type: text
+    required: true
+  - name: tags
+    type: string
+    list: true
+  - name: updatedDate
+    type: date
+  - name: draft
+    type: boolean
+- name: siteImages
+  label: Portrait and page illustrations
+  type: file
+  path: src/data/editor/images.json
+  format: json
+  fields:
+  - name: hero
+    label: Hero
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: profile
+    label: Profile
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: stack
+    label: Stack
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: researchImg
+    label: Research card
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: pubsImg
+    label: Publications card
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: cvImg
+    label: CV card
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: blogImg
+    label: Blog card
+    type: image
+    required: true
+    options:
+      media: illustrations
+  - name: spectrum
+    label: Spectrum
+    type: image
+    required: true
+    options:
+      media: illustrations

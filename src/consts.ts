@@ -1,3 +1,4 @@
+import identity from './data/editor/identity.json';
 // Single source of truth for identity, links and SEO defaults.
 // Empty strings hide the corresponding link/icon everywhere on the site.
 
@@ -13,36 +14,9 @@ export const sitePath = (path: string): string => {
   return normalized === '/' ? `${BASE_PATH}/` : `${BASE_PATH}${normalized}`;
 };
 
-export const SITE = {
-  name: 'Sourav Mondal',
-  shortName: 'Sourav',
-  title: 'Sourav Mondal — Phase-Change Photonics, IIT Madras',
-  description:
-    'PhD researcher at IIT Madras working on chalcogenide phase-change materials, active metasurfaces and reconfigurable nanophotonic devices. Research, publications, CV and personal writing.',
-  role: 'PhD Student',
-  department: 'Department of Physics',
-  institution: 'Indian Institute of Technology Madras',
-  institutionUrl: 'https://www.iitm.ac.in',
-  location: 'Chennai, India',
-  locale: 'en_IN',
-  eyebrow: ['PhD Student', 'Photonics', 'Optical Phase Change Materials'],
-  tagline: ['Light', 'Materials', 'Devices', 'A Brighter Tomorrow'],
-  intro:
-    'Exploring light–matter interactions and phase transitions for next-generation photonic devices. Curious about how materials work, and equally curious about life beyond the lab.',
-} as const;
+export const { site: SITE, email: EMAIL } = identity;
 
-// Email is split so it never appears as a plain string in the HTML source (cuts scraper spam).
-export const EMAIL = { user: 'sourav.mondal.dongal', domain: 'gmail.com' } as const;
-
-// TODO: replace with your real profile URLs. Leave '' to hide a link.
-export const SOCIAL = {
-  linkedin: '',
-  github: 'https://github.com/ph22d015',
-  scholar: '',
-  researchgate: '',
-  orcid: '', // e.g. 'https://orcid.org/0000-0000-0000-0000'
-} as const;
-
+export const SOCIAL: Partial<Record<'github' | 'scholar' | 'researchgate' | 'orcid' | 'linkedin', string>> = identity.social;
 export const NAV = [
   { href: '/', label: 'Home' },
   { href: '/about/', label: 'About' },

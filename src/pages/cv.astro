@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/editor/cv.json';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Base from '@/layouts/Base.astro';
@@ -12,17 +13,17 @@ const hasPdf = existsSync(join(process.cwd(), 'public', CV_PDF_PATH));
 const stats = [
   { value: publications.length, label: 'Publications' },
   { value: timeline.filter((t) => t.kind === 'talk' && t.detail?.includes('Poster')).length, label: 'Conference posters' },
-  { value: 13, label: 'Students mentored' },
-  { value: 124, label: 'AIR, CSIR-NET JRF' },
+  { value: copy.studentsMentored, label: 'Students mentored' },
+  { value: copy.examRank, label: 'AIR, CSIR-NET JRF' },
 ];
 ---
 <Base title="CV" description="Education, research experience, teaching, conferences and awards of Sourav Mondal, PhD researcher at IIT Madras.">
   <header class="page-hero">
     <div class="container">
-      <p class="eyebrow">Curriculum Vitae</p>
-      <h1>CV & Experience</h1>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.heading}</h1>
       <span class="rule" aria-hidden="true"></span>
-      <p>Physics researcher working on computational nanophotonics, active metasurface optimization and chalcogenide phase-change materials, combining thin-film deposition, sub-nanosecond optical characterization and electromagnetic simulation.</p>
+      <p>{copy.introduction}</p>
       {hasPdf ? (
         <p class="dl"><a class="btn btn-primary" href={sitePath(CV_PDF_PATH)} download><Icon name="download" /> Download PDF</a></p>
       ) : (
@@ -41,7 +42,7 @@ const stats = [
   </section>
 
   <section class="container section" aria-labelledby="edu">
-    <h2 id="edu" class="section-title">Education</h2>
+    <h2 id="edu" class="section-title">{copy.education}</h2>
     <div class="edu">
       {education.map((e) => (
         <article class="edu-row card">
@@ -55,13 +56,13 @@ const stats = [
   </section>
 
   <section class="container section tl-wrap" aria-labelledby="tl">
-    <h2 id="tl" class="section-title">Timeline</h2>
-    <p class="hint">Filter by category. Double-click a category to show only that one.</p>
+    <h2 id="tl" class="section-title">{copy.timeline}</h2>
+    <p class="hint">{copy.timelineHint}</p>
     <Timeline client:visible items={timeline} labels={timelineLabels} />
   </section>
 
   <section class="container section" aria-labelledby="cw">
-    <h2 id="cw" class="section-title">Graduate coursework</h2>
+    <h2 id="cw" class="section-title">{copy.graduate_coursework}</h2>
     <div class="courses">
       {coursework.map((c) => (
         <details class="course card">

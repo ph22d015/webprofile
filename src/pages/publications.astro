@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/editor/publications.json';
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import PubList from '@/components/PubList.tsx';
@@ -20,10 +21,10 @@ const ld = publications.map((p) => ({
 <Base title="Publications" description="Journal articles and conference papers on phase-change metasurfaces and thermal transport in 2D materials, with BibTeX." jsonLd={ld}>
   <header class="page-hero">
     <div class="container">
-      <p class="eyebrow">Publications</p>
-      <h1>Papers & proceedings</h1>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.heading}</h1>
       <span class="rule" aria-hidden="true"></span>
-      <p>Peer-reviewed journal articles and conference papers. Each entry has copy-ready BibTeX.</p>
+      <p>{copy.introduction}</p>
       {SOCIAL.scholar && (
         <p class="profile-links">
           <a class="btn btn-ghost" href={SOCIAL.scholar} rel="me noopener noreferrer" target="_blank"><Icon name="scholar" /> Google Scholar</a>

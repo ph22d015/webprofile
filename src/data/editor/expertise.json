@@ -1,0 +1,83 @@
+{
+  "researchThemes": [
+    {
+      "title": "Chalcogenide phase-change thin films",
+      "body": "Deposition and characterization of chalcogenide phase-change materials, whose large, non-volatile change in refractive index between amorphous and crystalline phases is the basis for reconfigurable optics.",
+      "image": "research-card"
+    },
+    {
+      "title": "Multi-level states by optical pulse engineering",
+      "body": "Shaping sub-nanosecond optical pulses to reach intermediate, partially crystallized states, so one film can store more than two optical levels.",
+      "image": "spectrum"
+    },
+    {
+      "title": "Active metasurfaces",
+      "body": "Design and optimization of phase-change metasurfaces for reconfigurable nanophotonic devices, including disorder-based statistical encoding of light.",
+      "image": "photonic-stack"
+    }
+  ],
+  "skills": [
+    {
+      "group": "Thin-film deposition & processing",
+      "icon": "flask",
+      "items": [
+        "DC/RF sputtering",
+        "E-beam evaporation",
+        "Pulsed laser deposition (PLD)",
+        "Wet-bench cleaning protocols",
+        "Cleanroom operations"
+      ]
+    },
+    {
+      "group": "Structural & morphological",
+      "icon": "microscope",
+      "items": [
+        "SEM",
+        "EDS",
+        "XRD",
+        "XPS",
+        "Ellipsometry",
+        "Profilometry"
+      ]
+    },
+    {
+      "group": "Optical & physical properties",
+      "icon": "laser",
+      "items": [
+        "Sub-ns optical switching (custom setup)",
+        "PL",
+        "UV-Vis-NIR",
+        "FTIR",
+        "Ultrafast electrical & optical measurements",
+        "PPMS",
+        "SQUID-VSM"
+      ]
+    },
+    {
+      "group": "Modelling & simulation",
+      "icon": "cube",
+      "items": [
+        "COMSOL Multiphysics",
+        "Lumerical",
+        "Mathematica",
+        "CompleteEASE",
+        "FullProf",
+        "VESTA",
+        "X'Pert HighScore Plus",
+        "XEI",
+        "Origin Pro",
+        "Blender"
+      ]
+    },
+    {
+      "group": "Programming",
+      "icon": "code",
+      "items": [
+        "Python",
+        "MATLAB",
+        "Fortran",
+        "TypeScript / React"
+      ]
+    }
+  ]
+}
