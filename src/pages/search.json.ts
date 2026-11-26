@@ -12,6 +12,7 @@ export async function GET() {
     '/publications/': 'Journal and conference publications with BibTeX',
     '/cv/': 'Education, research, teaching, conferences and awards',
     '/blog/': 'All blog posts',
+    '/quotes/': 'Favourite quotes and personal reflections',
     '/gallery/': 'Photography',
   };
 

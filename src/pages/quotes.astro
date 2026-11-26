@@ -1,0 +1,42 @@
+---
+import Base from '@/layouts/Base.astro';
+import collection from '@/data/editor/quotes.json';
+
+type Entry = { quote: string; author?: string; source?: string; thoughts?: string };
+const entries: Entry[] = collection.entries ?? [];
+const description = 'Favourite quotes and personal reflections.';
+---
+<Base title={collection.title} description={description}>
+  <header class="page-hero">
+    <div class="container">
+      <h1>{collection.title}</h1>
+      <span class="rule" aria-hidden="true"></span>
+    </div>
+  </header>
+  <section class="container section readings" aria-label="Quotes and reflections">
+    {entries.length === 0 && <p class="empty">The first quote and reflection will appear here.</p>}
+    {entries.map((entry) => (
+      <article>
+        <figure>
+          <blockquote>{entry.quote}</blockquote>
+          {(entry.author || entry.source) && <figcaption>{entry.author}{entry.author && entry.source && ', '}<cite>{entry.source}</cite></figcaption>}
+        </figure>
+        {entry.thoughts?.trim() && <div class="reflection"><h2>My thoughts</h2><p>{entry.thoughts}</p></div>}
+      </article>
+    ))}
+  </section>
+</Base>
+
+<style>
+  .readings { max-width: 48rem; }
+  article { padding-block: 2rem; overflow-wrap: anywhere; }
+  article:first-child { padding-top: 0; }
+  article + article { border-top: 1px solid var(--line); }
+  figure { margin: 0; padding-left: 1.25rem; border-left: 3px solid var(--violet); }
+  blockquote { margin: 0; font: 500 clamp(1.35rem, 3vw, 1.9rem)/1.45 var(--font-serif); white-space: pre-line; }
+  figcaption, .empty { color: var(--ink-2); }
+  figcaption { margin-top: .75rem; }
+  .reflection { margin-top: 1.4rem; }
+  .reflection h2 { font: 600 .95rem var(--font-sans); }
+  .reflection p { margin: .4rem 0 0; white-space: pre-line; }
+</style>

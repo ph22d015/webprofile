@@ -741,3 +741,31 @@ content:
     required: true
     options:
       media: illustrations
+- name: quotes
+  label: Favourite Quotes
+  type: file
+  path: src/data/editor/quotes.json
+  format: json
+  fields:
+  - name: title
+    label: Section title
+    type: string
+    required: true
+  - name: entries
+    label: Quotes
+    type: object
+    list: true
+    fields:
+    - name: quote
+      label: Quote
+      type: text
+      required: true
+    - name: author
+      label: Author
+      type: string
+    - name: source
+      label: Source (book, poem, or talk)
+      type: string
+    - name: thoughts
+      label: My thoughts
+      type: text
