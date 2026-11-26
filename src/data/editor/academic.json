@@ -5,7 +5,6 @@
       "field": "Physics",
       "institution": "Indian Institute of Technology Madras",
       "place": "Chennai",
-      "score": "CGPA 9.20",
       "period": "2022 – present",
       "status": "ongoing"
     },
@@ -14,7 +13,6 @@
       "field": "Physics",
       "institution": "Jadavpur University",
       "place": "Kolkata",
-      "score": "CGPA 8.90",
       "period": "2018 – 2020"
     },
     {
@@ -22,7 +20,6 @@
       "field": "Physics",
       "institution": "Jadavpur University",
       "place": "Kolkata",
-      "score": "CGPA 7.53",
       "period": "2015 – 2018"
     }
   ],
@@ -33,23 +30,21 @@
       "when": "2022 – present",
       "title": "PhD, Physics",
       "org": "IIT Madras",
-      "detail": "CGPA 9.20 · Chalcogenide phase-change materials and reconfigurable nanophotonics"
+      "detail": "Chalcogenide Phase Change Materials and Reconfigurable Nanophotonics"
     },
     {
       "kind": "education",
       "start": "2018-07",
       "when": "2018 – 2020",
       "title": "M.Sc., Physics",
-      "org": "Jadavpur University, Kolkata",
-      "detail": "CGPA 8.90"
+      "org": "Jadavpur University, Kolkata"
     },
     {
       "kind": "education",
       "start": "2015-07",
       "when": "2015 – 2018",
       "title": "B.Sc., Physics",
-      "org": "Jadavpur University, Kolkata",
-      "detail": "CGPA 7.53"
+      "org": "Jadavpur University, Kolkata"
     },
     {
       "kind": "research",
