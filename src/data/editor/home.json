@@ -3,22 +3,22 @@
   "cards": {
     "research": {
       "title": "Research",
-      "description": "Optical phase change materials, ultrafast optics, photonic devices, and light–matter interaction.",
+      "description": "Optical Phase Change Materials, Ultrafast Optics, Photonic Devices, and Light–Matter Interaction.",
       "button": "Explore Research"
     },
     "publications": {
       "title": "Publications",
-      "description": "Journal articles, conference papers and preprints.",
+      "description": "Journal Articles, Conference Papers and Preprints.",
       "button": "View Publications"
     },
     "cv": {
       "title": "CV & Experience",
-      "description": "Education, research experience, skills, projects and achievements.",
+      "description": "Education, Research Experience, Skills, Projects and Achievements.",
       "button": "View CV"
     },
     "blog": {
       "title": "Thoughts & Blog",
-      "description": "Ideas, experiences, reflections on science, life and beyond.",
+      "description": "Ideas, Experiences, Reflections on Science, Life and beyond.",
       "button": "Read the Blog"
     }
   }
