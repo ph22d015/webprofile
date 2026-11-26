@@ -1,4 +1,9 @@
 {
   "title": "Favourite Quotes",
-  "entries": []
+  "entries": [
+    {
+      "quote": "Only a few know how much one must know to know how little one knows.",
+      "author": "Werner Heisenberg"
+    }
+  ]
 }
