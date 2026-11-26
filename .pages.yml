@@ -387,6 +387,11 @@ content:
   path: src/data/editor/biography.md
   format: yaml-frontmatter
   fields:
+  - name: title
+    type: string
+    default: Biography
+    readonly: true
+    required: true
   - name: body
     type: rich-text
 - name: demoIntro

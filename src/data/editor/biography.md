@@ -1,7 +1,5 @@
 ---
----
----
-
+title: Biography
 ---
 
 I'm a physics researcher curious about how light interacts with disordered materials. At IIT Madras, my PhD focuses on **chalcogenide Phase Change Materials (PCMs)** that change their electrical, optical and thermal properties as they switch between amorphous and crystalline phases. My work involves growing and characterizing thin films, studying their switching dynamics using engineered pulses (mostly optical), and developing **Active Metasurfaces** for Reconfigurable, Non-Volatile Photonic Devices.
