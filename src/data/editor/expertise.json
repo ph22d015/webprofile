@@ -1,18 +1,18 @@
 {
   "researchThemes": [
     {
-      "title": "Chalcogenide phase-change thin films",
-      "body": "Deposition and characterization of chalcogenide phase-change materials, whose large, non-volatile change in refractive index between amorphous and crystalline phases is the basis for reconfigurable optics.",
+      "title": "Chalcogenide Phase Change Materials thin films",
+      "body": "Deposition and characterization of Chalcogenide Phase Change Materials, whose large, non-volatile change in Refractive Index between Amorphous and Crystalline Phases is the basis for Reconfigurable Optics.",
       "image": "research-card"
     },
     {
-      "title": "Multi-level states by optical pulse engineering",
-      "body": "Shaping sub-nanosecond optical pulses to reach intermediate, partially crystallized states, so one film can store more than two optical levels.",
+      "title": "Multi-level states by Optical Pulse Engineering",
+      "body": "Shaping sub-nanosecond Optical Pulses to reach intermediate, partially crystallized states, so one film can store more than two Optical Levels.",
       "image": "spectrum"
     },
     {
       "title": "Active metasurfaces",
-      "body": "Design and optimization of phase-change metasurfaces for reconfigurable nanophotonic devices, including disorder-based statistical encoding of light.",
+      "body": "Design and optimization of Phase Change metasurfaces for Reconfigurable Nanophotonic Devices, including disorder-based statistical encoding of light.",
       "image": "photonic-stack"
     }
   ],
