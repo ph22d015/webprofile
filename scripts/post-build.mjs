@@ -2,9 +2,10 @@
 // or leak data that should not be public.
 import { readdir, readFile } from 'node:fs/promises';
 import { join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-const DIST = new URL('../dist/', import.meta.url).pathname;
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 const problems = [];
 
 async function* walk(dir) {

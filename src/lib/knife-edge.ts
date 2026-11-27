@@ -1,5 +1,10 @@
 import { levenbergMarquardt as LM } from 'ml-levenberg-marquardt';
-import sgg from 'ml-savitzky-golay';
+import sggImport from 'ml-savitzky-golay';
+
+// Node loads the package's CommonJS build, which nests the function under .default; bundlers use the ESM build.
+const sgg = (sggImport as unknown as { default?: typeof sggImport }).default ?? sggImport;
+
+const LM_OPTIONS = { damping: 1.5, maxIterations: 1000, errorTolerance: 1e-4 };
 
 // Error function approximation
 export function erf(x: number): number {
@@ -61,24 +66,15 @@ export function performErfFit(xData: number[], yData: number[]) {
 
   const initialValues = [p0Guess, AGuess, x0Guess, wGuess];
 
-  const data = { x: xData, y: yData };
-
   try {
-    const options = {
-      damping: 1.5,
-      initialValues,
-      maxIterations: 1000,
-      errorTolerance: 10e-5,
-    };
-
-    const result = LM(data, erfFitFunction, options);
+    const result = LM({ x: xData, y: yData }, erfFitFunction, { ...LM_OPTIONS, initialValues });
     const popt = result.parameterValues;
     if (!popt.every(Number.isFinite))
       throw new Error('Fit returned non-finite parameters.');
     const fitW = popt[3];
     const diameter = 2 * Math.abs(fitW);
 
-    const yPred = xData.map((x) => erfFitFunction(popt)(x));
+    const yPred = xData.map(erfFitFunction(popt));
     const r2 = rSquared(yData, yPred);
 
     return {
@@ -154,28 +150,19 @@ export function performGaussianFit(
     A_g_guess < 0 ? Math.max(...dySmooth) : Math.min(...dySmooth);
 
   const initialValues = [A_g_guess, x0_g_guess, sigma_guess, off_guess];
-  const data = { x: xMid, y: dySmooth };
 
   try {
-    const options = {
-      damping: 1.5,
-      initialValues,
-      maxIterations: 1000,
-      errorTolerance: 10e-5,
-    };
-
-    const result = LM(data, gaussianFitFunction, options);
+    const result = LM({ x: xMid, y: dySmooth }, gaussianFitFunction, { ...LM_OPTIONS, initialValues });
     const popt = result.parameterValues;
     if (!popt.every(Number.isFinite))
       throw new Error('Fit returned non-finite parameters.');
     const fitSigma = Math.abs(popt[2]);
 
-    const FWHM_SIGMA = 2 * Math.sqrt(2 * Math.log(2));
-    const fwhm = FWHM_SIGMA * fitSigma;
-    const wFromGauss = fwhm / Math.sqrt(2 * Math.log(2));
+    const fwhm = 2 * Math.sqrt(2 * Math.log(2)) * fitSigma;
+    const wFromGauss = 2 * fitSigma; // 1/e² radius of a Gaussian intensity profile
     const diameterG = 2 * wFromGauss;
 
-    const yPred = xMid.map((x) => gaussianFitFunction(popt)(x));
+    const yPred = xMid.map(gaussianFitFunction(popt));
     const r2 = rSquared(dySmooth, yPred);
 
     // Calculate empirical noise from SG filter (RMS of residuals between raw and smoothed derivative)
@@ -208,4 +195,40 @@ export function performGaussianFit(
     console.error('Gaussian fit failed', e);
     return { success: false as const, error: String(e), dy, dySmooth, xMid };
   }
+}
+
+// Reads an uploaded knife-edge scan (position, power) file.
+export type Scan = { name: string; x: number[]; y: number[] };
+export function parseScan(text: string, name: string): Scan {
+  // Same cell split as OptiStack's dispersion tables: comma, semicolon, tab or spaces; quotes dropped.
+  const rows = text
+    .split(/\r?\n/)
+    .filter((line) => line.trim())
+    .map((line) => line.replace(/"/g, '').trim().split(/\s*[,;\t]\s*| +/));
+  if (
+    rows.length &&
+    rows[0].slice(0, 2).every((s) => s.trim() && !Number.isFinite(Number(s)))
+  )
+    rows.shift();
+  const points = rows
+    .map((r, i) => {
+      if (
+        r.length < 2 ||
+        r.slice(0, 2).some((s) => !s.trim() || !Number.isFinite(Number(s)))
+      )
+        throw new Error(
+          'Check position and power in data row ' + (i + 1) + '.',
+        );
+      return [Number(r[0]), Number(r[1])];
+    })
+    .sort((a, b) => a[0] - b[0]);
+  if (points.length < 5)
+    throw new Error('Both fits need at least five distinct positions.');
+  if (points.some(([x], i) => i > 0 && x === points[i - 1][0]))
+    throw new Error(
+      'Duplicate positions prevent differentiation. Average repeated measurements at each position first.',
+    );
+  if (points.every((p) => p[1] === points[0][1]))
+    throw new Error('The power is constant across this scan.');
+  return { name, x: points.map((p) => p[0]), y: points.map((p) => p[1]) };
 }

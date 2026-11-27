@@ -26,7 +26,7 @@ export type Publication = {
   details?: string;
   year: number;
   type: PubType;
-  doi?: string; // TODO: add DOIs — they enable links and correct BibTeX
+  doi?: string; // enables links and correct BibTeX
   url?: string;
   tags: string[];
 };

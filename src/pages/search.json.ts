@@ -5,19 +5,8 @@ import { getPosts } from '@/lib/posts';
 // Compact search index generated at build time. Keys are short to keep the file small.
 export async function GET() {
   const posts = await getPosts();
-  const pageDescriptions: Record<string, string> = {
-    '/': 'Home',
-    '/about/': 'About me, languages, hobbies and contact',
-    '/research/': 'Research themes, expertise and interactive thin-film demo',
-    '/publications/': 'Journal and conference publications with BibTeX',
-    '/cv/': 'Education, research, teaching, conferences and awards',
-    '/blog/': 'All blog posts',
-    '/quotes/': 'Favourite quotes and personal reflections',
-    '/gallery/': 'Photography',
-  };
-
   const index = [
-    ...NAV.map((n) => ({ t: n.label, d: pageDescriptions[n.href] ?? '', u: sitePath(n.href), k: 'Page', x: '' })),
+    ...NAV.map((n) => ({ t: n.label, d: n.desc, u: sitePath(n.href), k: 'Page', x: '' })),
     ...posts.map((p) => ({
       t: p.data.title,
       d: p.data.description,

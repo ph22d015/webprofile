@@ -97,7 +97,7 @@
   document.addEventListener('keydown', (e) => {
     const target = e.target as HTMLElement;
     const typing = target.closest('input, textarea, [contenteditable="true"]');
-    if ((e.key === '/' && !typing) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) {
+    if ((e.key === '/' && !typing) || (e.key?.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) {
       e.preventDefault();
       if (!dlg.open) open();
     }

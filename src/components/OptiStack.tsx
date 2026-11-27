@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { calculateOpticalResponse } from '@/lib/optistack';
+import { calculateOpticalResponse, dispersion, number } from '@/lib/optistack';
 import type {
   SweepParameter,
   DispersiveDataPoint,
@@ -24,51 +24,6 @@ const material = (id: string, name: string, n: string, k = '0'): Material => ({
   table: '',
 });
 
-function number(value: string, label: string, min = 0, max = Infinity) {
-  const result = Number(value);
-  if (!value.trim() || !Number.isFinite(result) || result < min || result > max)
-    throw new Error('Check ' + label + '.');
-  return result;
-}
-
-function dispersion(table: string): DispersiveDataPoint[] {
-  const lines = table
-    .trim()
-    .replace(/^\uFEFF/, '')
-    .split(/\r?\n/)
-    .filter((line) => line.trim() && !line.trim().startsWith('#'));
-  if (
-    /^(wavelength|lambda|λ|wl)\b/i.test(lines[0] || '') ||
-    /^wavelength_/i.test(lines[0] || '')
-  )
-    lines.shift();
-  const data = lines
-    .map((line, i) => {
-      const cells = line.trim().split(/\s*[,;\t]\s*| +/);
-      if (cells.length !== 3)
-        throw new Error(
-          'Expected three columns in dispersion row ' + (i + 1) + '.',
-        );
-      return {
-        wavelength: number(
-          cells[0],
-          'wavelength in row ' + (i + 1),
-          Number.MIN_VALUE,
-        ),
-        n: number(cells[1], 'n in row ' + (i + 1)),
-        k: number(cells[2], 'k in row ' + (i + 1)),
-      };
-    })
-    .sort((a, b) => a.wavelength - b.wavelength);
-  if (
-    data.length < 2 ||
-    data.some((p, i) => i > 0 && p.wavelength === data[i - 1].wavelength)
-  )
-    throw new Error(
-      'Enter at least two distinct wavelengths; each wavelength may appear once.',
-    );
-  return data;
-}
 
 function Chart({
   x,
@@ -208,12 +163,16 @@ export default function OptiStack() {
           m.mode === 'constant'
             ? {
                 type: 'constant',
-                n: number(m.n, m.name + ' index'),
+                n: number(m.n, m.name + ' index', Number.MIN_VALUE),
                 k: number(m.k, m.name + ' extinction coefficient'),
               }
             : { type: 'dispersive', data: dispersion(m.table) };
         return { id: m.id, properties };
       });
+      // R/T are only defined for light arriving through a lossless medium.
+      const inc = library.find((m) => m.id === incident)?.properties;
+      if (inc && (inc.type === 'constant' ? inc.k > 0 : inc.data.some((p) => p.k > 0)))
+        throw new Error('The incident medium must be lossless (k = 0).');
       const waveSweep = sweep === 'wavelength';
       const minWavelength = waveSweep
         ? number(range.minW, 'minimum wavelength', 1)
@@ -235,7 +194,6 @@ export default function OptiStack() {
         materialLibrary: library,
         incidentMediumMaterialId: incident,
         substrateMediumMaterialId: substrate,
-        numLayers: layers.length,
         layerMaterials: layers,
         thickness: layers.map((l, i) =>
           number(l.d, 'layer ' + (i + 1) + ' thickness'),

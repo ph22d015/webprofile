@@ -73,10 +73,17 @@ const ld = {
 <style>
   .post-hero { position: relative; overflow: hidden; background: var(--night); color: var(--on-night); padding: calc(var(--header-h) + 64px) 0 48px; }
   .post-hero :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; filter: blur(2px); transform: scale(1.04); }
-  .post-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, var(--night) 0%, rgb(7 11 29 / 0.55) 60%, rgb(7 11 29 / 0.7)); }
+  .post-hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 80% at 80% 0%, rgb(139 92 246 / 0.3), transparent 70%), linear-gradient(0deg, var(--night) 0%, rgb(5 6 15 / 0.55) 60%, rgb(5 6 15 / 0.75)); }
+  @media (prefers-reduced-motion: no-preference) {
+    .post-hero :global(.bg) { animation: kenburns 24s ease-in-out infinite alternate; }
+    .inner > * { animation: rise 0.8s var(--ease-out) both; }
+    .inner > :nth-child(2) { animation-delay: 0.08s; }
+    .inner > :nth-child(n+3) { animation-delay: 0.16s; }
+  }
+  @keyframes kenburns { to { transform: scale(1.14) translate(-2%, -1%); } }
   .inner { position: relative; z-index: 1; max-width: 860px; }
   .crumbs { font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-night-2); margin-bottom: 14px; }
-  .crumbs a { color: #c8bcff; text-decoration: none; }
+  .crumbs a { color: var(--cyan); text-decoration: none; }
   h1 { font-size: clamp(2rem, 4.6vw, 3.1rem); margin-bottom: 12px; }
   .lead { font-size: 1.2rem; color: #dfe2f5; max-width: 60ch; }
   .meta { display: flex; flex-wrap: wrap; gap: 20px; color: var(--on-night-2); font-size: 0.95rem; margin: 0; }
@@ -87,8 +94,8 @@ const ld = {
   .tags a { text-decoration: none; }
   .tags a:hover { border-color: var(--violet); color: var(--violet-ink); }
   .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .pager a { display: grid; gap: 4px; padding: 16px 18px; color: var(--ink); text-decoration: none; font-weight: 600; transition: box-shadow 0.2s ease; }
-  .pager a:hover { box-shadow: var(--shadow-hover); }
+  .pager a { display: grid; gap: 4px; padding: 18px 20px; color: var(--ink); text-decoration: none; font: 600 1.05rem/1.35 var(--font-display); }
+  .pager a:hover { transform: translateY(-3px); }
   .pager a span { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
   .pager .right { text-align: right; }
   @media (max-width: 620px) { .pager { grid-template-columns: 1fr; } .pager .right { text-align: left; } }

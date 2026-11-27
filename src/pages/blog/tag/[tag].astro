@@ -5,9 +5,12 @@ import { getPosts, slugify, type Post } from '@/lib/posts';
 export async function getStaticPaths() {
   const posts = await getPosts();
   const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
-  return tags.map((tag) => ({
-    params: { tag: slugify(tag) },
-    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)), allTags: tags },
+  // Tags that differ only in case or punctuation share one page (one URL per slug).
+  const bySlug = new Map<string, string>();
+  for (const t of tags) if (!bySlug.has(slugify(t))) bySlug.set(slugify(t), t);
+  return [...bySlug].map(([slug, tag]) => ({
+    params: { tag: slug },
+    props: { tag, posts: posts.filter((p) => p.data.tags.some((t) => slugify(t) === slug)), allTags: tags },
   }));
 }
 

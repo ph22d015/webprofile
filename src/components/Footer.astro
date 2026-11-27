@@ -1,16 +1,9 @@
 ---
 import Icon from './Icon.astro';
-import { NAV, SITE, SOCIAL, sitePath } from '@/consts';
+import { NAV, PROFILES, SITE, sitePath } from '@/consts';
 
 const onProfile = Astro.url.pathname.replace(/\/+$/, '') === sitePath('/').replace(/\/+$/, '');
 const year = new Date().getFullYear();
-const profiles = [
-  { href: SOCIAL.linkedin, label: 'LinkedIn', icon: 'linkedin' },
-  { href: SOCIAL.scholar, label: 'Google Scholar', icon: 'scholar' },
-  { href: SOCIAL.researchgate, label: 'ResearchGate', icon: 'researchgate' },
-  { href: SOCIAL.orcid, label: 'ORCID', icon: 'orcid' },
-  { href: SOCIAL.github, label: 'GitHub', icon: 'github' },
-] as const;
 ---
 <footer class="site-footer">
   <div class="container grid">
@@ -27,7 +20,7 @@ const profiles = [
     </nav>
     <div>
       <ul class="social">
-        {profiles.filter((p) => p.href).map((p) => (
+        {PROFILES.filter((p) => p.href).map((p) => (
           <li>
             <a href={p.href} rel="me noopener noreferrer" target="_blank" aria-label={p.label}>
               <Icon name={p.icon} />
@@ -41,14 +34,17 @@ const profiles = [
   <div class="container base">
     {onProfile && <img src="https://hits.sh/msourav.me/webprofile.svg?label=Profile%20views&amp;color=5b3fe0" alt="Profile views counter" referrerpolicy="no-referrer" class="visit-count" />}
     <p>© {year} {SITE.name}. Words and photographs are my own unless noted.</p>
+    <a class="to-top" href="#main"><Icon name="arrow-up" size={16} /> Back to top</a>
   </div>
 </footer>
 
 <style>
-  .site-footer { background: var(--night); color: var(--on-night-2); margin-top: 24px; font-size: 0.95rem; }
+  .site-footer { position: relative; background: radial-gradient(800px 260px at 85% 0%, rgb(139 92 246 / 0.18), transparent 70%), var(--night); color: var(--on-night-2); margin-top: 48px; font-size: 0.95rem; }
+  .site-footer::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 1px; background: var(--grad); opacity: 0.7; }
   .grid { display: grid; grid-template-columns: 1.3fr 2fr auto; gap: 32px; padding: 48px 0 32px; align-items: start; }
   .brand { display: inline-flex; gap: 10px; align-items: center; color: #fff; text-decoration: none; font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; }
-  .brand :global(svg) { color: var(--violet); }
+  .brand { font-family: var(--font-display); }
+  .brand :global(svg) { width: 32px; height: 32px; padding: 6px; border-radius: 10px; color: #fff; background: var(--grad); }
   .muted { margin: 0 0 4px; }
   :global(.inline) { display: inline-block; vertical-align: -2px; }
   .links { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px 20px; }
@@ -56,9 +52,15 @@ const profiles = [
   .links a:hover, .social a:hover { color: #fff; }
   .social { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
   .social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; }
-  .social a:hover { background: rgb(255 255 255 / 0.08); }
+  .social a { transition: background-color 0.2s ease, transform 0.3s var(--ease-spring), color 0.2s ease; }
+  .social a:hover { background: rgb(139 92 246 / 0.2); transform: translateY(-3px); }
   .base { border-top: 1px solid rgb(255 255 255 / 0.08); padding: 18px 0 28px; font-size: 0.85rem; }
   .visit-count { height: 20px; width: auto; margin-bottom: 8px; }
+  .base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
   .base p { margin: 0; }
+  .to-top { display: inline-flex; align-items: center; gap: 6px; color: var(--on-night-2); text-decoration: none; }
+  .to-top:hover { color: #fff; }
+  .to-top :global(svg) { transition: transform 0.3s var(--ease-spring); }
+  .to-top:hover :global(svg) { transform: translateY(-3px); }
   @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
 </style>

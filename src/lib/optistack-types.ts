@@ -13,7 +13,6 @@ export interface SolverFormValues {
   incidentMediumMaterialId: string;
   substrateMediumMaterialId: string;
   materialLibrary: { id: string; properties: LayerMaterialProperties }[];
-  numLayers: number;
   thickness: number[];
   layerMaterials: { materialId: string }[];
   minWavelength: number;

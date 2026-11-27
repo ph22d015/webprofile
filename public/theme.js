@@ -11,7 +11,6 @@
       toggle.hidden = false;
       toggle.setAttribute('aria-pressed', String(dark));
       toggle.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
-      toggle.textContent = dark ? '☀' : '☾';
     }
   }
   apply();

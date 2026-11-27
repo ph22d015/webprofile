@@ -76,6 +76,27 @@ const stats = [
 
 <script>
   document.querySelector<HTMLButtonElement>('[data-print-cv]')?.addEventListener('click', () => window.print());
+
+  // Count the leading number of each stat up from 0 the first time it is seen.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        io.unobserve(e.target);
+        const el = e.target as HTMLElement;
+        const m = /^(\d+)(.*)$/.exec(el.textContent ?? '');
+        if (!m) continue;
+        const end = Number(m[1]); const rest = m[2]; const t0 = performance.now();
+        const step = (t: number) => {
+          const k = Math.min((t - t0) / 1200, 1);
+          el.textContent = `${Math.round(end * (1 - (1 - k) ** 3))}${rest}`;
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.stat strong').forEach((el) => io.observe(el));
+  }
 </script>
 
 <style>
@@ -90,15 +111,22 @@ const stats = [
     .stats { margin-top: 0; }
   }
   .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: -32px; position: relative; }
-  .stat { padding: 18px 20px; display: grid; gap: 2px; }
-  .stat strong { font-size: 2rem; line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .stat span { color: var(--ink-2); font-size: 0.95rem; }
+  .stat { padding: 22px 22px 20px; display: grid; gap: 6px; overflow: hidden; }
+  .stat::after { content: ''; position: absolute; left: 22px; right: 22px; bottom: 0; height: 2px; background: var(--grad); opacity: 0.5; transform: scaleX(0.25); transform-origin: left; transition: transform 0.6s var(--ease-out), opacity 0.3s; }
+  .stat:hover::after { transform: scaleX(1); opacity: 1; }
+  .stat strong { font: 700 2.6rem/1 var(--font-display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; background: var(--grad); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { color: var(--ink-2); font-size: 0.92rem; }
   @media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
 
   .edu { display: grid; gap: 10px; margin-top: 16px; }
-  .edu-row { display: grid; grid-template-columns: 1.1fr 1.6fr 0.6fr 0.7fr; gap: 12px; align-items: center; padding: 14px 20px; }
+  .edu-row { display: grid; grid-template-columns: 1.1fr 1.6fr 0.6fr 0.7fr; gap: 12px; align-items: center; padding: 16px 22px; overflow: hidden; }
+  .edu-row::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad); transform: scaleY(0); transition: transform 0.4s var(--ease-out); }
+  .edu-row:hover::after { transform: scaleY(1); }
+  .deg { font-family: var(--font-display); }
   .deg strong { color: var(--violet-ink); }
-  .now { margin-left: 10px; font-family: var(--font-sans); font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: var(--teal-bg); color: var(--teal); vertical-align: 2px; }
+  .now { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; font-family: var(--font-sans); font-size: 0.72rem; padding: 2px 9px; border-radius: 999px; background: var(--teal-bg); color: var(--teal); vertical-align: 2px; }
+  .now::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: ping 1.8s ease-out infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 currentColor; } 100% { box-shadow: 0 0 0 6px transparent; } }
   .inst { color: var(--ink-2); }
   .score, .period { font-family: var(--font-sans); font-size: 0.92rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
   .period { text-align: right; }
@@ -106,33 +134,47 @@ const stats = [
 
   .hint { color: var(--ink-3); font-size: 0.95rem; margin-top: -4px; }
   .courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-top: 16px; }
-  .course { padding: 14px 18px; }
-  .course summary { cursor: pointer; font-weight: 600; }
-  .course p { margin: 8px 0 0; color: var(--ink-2); }
+  .course { padding: 16px 20px; }
+  .course summary { cursor: pointer; font: 600 1.02rem/1.35 var(--font-display); list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  .course summary::-webkit-details-marker { display: none; }
+  .course summary::after { content: '+'; flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2); color: var(--violet-ink); font-weight: 500; transition: transform 0.35s var(--ease-spring), background-color 0.2s; }
+  .course[open] summary::after { transform: rotate(45deg); background: var(--purple-bg); }
+  .course p { margin: 10px 0 0; color: var(--ink-2); }
+  @media (prefers-reduced-motion: no-preference) { .course[open] p { animation: rise 0.4s var(--ease-out); } }
 
   /* ---- Timeline island ---- */
   .tl-wrap :global(.tl-filters) { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 28px; }
   .tl-wrap :global(.tl-filters button) {
     display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-sans); font-size: 0.85rem;
-    padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3); cursor: pointer;
-    transition: all 0.15s ease;
+    padding: 7px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3); cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.3s var(--ease-spring);
   }
-  .tl-wrap :global(.tl-filters button.on) { color: var(--ink); border-color: var(--ink-3); }
-  .tl-wrap :global(.tl-all.on) { background: var(--grad); color: #fff !important; border-color: transparent !important; }
-  .tl-wrap :global(.dot) { width: 9px; height: 9px; border-radius: 50%; background: var(--c); opacity: 0.35; }
-  .tl-wrap :global(.on .dot) { opacity: 1; }
+  .tl-wrap :global(.tl-filters button) { color: var(--ink-2); }
+  .tl-wrap :global(.tl-filters button:hover) { transform: translateY(-2px); border-color: var(--c, var(--violet)); color: var(--ink); }
+  .tl-wrap :global(.tl-filters button:active) { transform: scale(0.95); }
+  /* Selected = solid fill in the category colour; everything else stays neutral. */
+  .tl-wrap :global(.tl-filters button.on) { color: #fff; border-color: transparent; background: var(--f, var(--c)); box-shadow: 0 4px 14px color-mix(in srgb, var(--c) 40%, transparent); }
+  .tl-wrap :global(.tl-filters button.tl-all.on) { background: var(--grad); color: #fff !important; border-color: transparent !important; }
+  .tl-wrap :global(.dot) { width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+  .tl-wrap :global(.on .dot) { background: #fff; }
+  .tl-wrap :global(.on .n) { color: rgb(255 255 255 / 0.85); }
   .tl-wrap :global(.n) { font-size: 0.75rem; color: var(--ink-3); }
-  .tl-wrap :global(.k-education) { --c: #7b5cff; }
-  .tl-wrap :global(.k-research) { --c: #3d7bff; }
-  .tl-wrap :global(.k-teaching) { --c: #12a383; }
-  .tl-wrap :global(.k-talk) { --c: #e0632e; }
-  .tl-wrap :global(.k-award) { --c: #d4a017; }
+  .tl-wrap :global(.k-education) { --c: #8b5cf6; --f: #6d28d9; }
+  .tl-wrap :global(.k-research) { --c: #0ea5c6; --f: #0e7490; }
+  .tl-wrap :global(.k-teaching) { --c: #10b981; --f: #047857; }
+  .tl-wrap :global(.k-talk) { --c: #ec4899; --f: #be185d; }
+  .tl-wrap :global(.k-award) { --c: #f59e0b; --f: #b45309; }
 
   .tl-wrap :global(.tl-list) { list-style: none; margin: 0; padding: 0 0 0 28px; position: relative; display: grid; gap: 16px; }
-  .tl-wrap :global(.tl-list::before) { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--violet), var(--blue), transparent); border-radius: 2px; }
-  .tl-wrap :global(.tl-item) { position: relative; animation: tl-in 0.35s ease both; }
-  .tl-wrap :global(.tl-marker) { position: absolute; left: -27px; top: 20px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--c); }
-  .tl-wrap :global(.tl-card) { padding: 16px 20px; border-left: 3px solid var(--c); }
+  .tl-wrap :global(.tl-list::before) { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--cyan), var(--violet), var(--magenta), transparent); border-radius: 2px; }
+  .tl-wrap :global(.tl-item) { position: relative; animation: tl-in 0.5s var(--ease-out) both; }
+  .tl-wrap :global(.tl-item:nth-child(2)) { animation-delay: 0.05s; }
+  .tl-wrap :global(.tl-item:nth-child(3)) { animation-delay: 0.1s; }
+  .tl-wrap :global(.tl-item:nth-child(n+4)) { animation-delay: 0.15s; }
+  .tl-wrap :global(.tl-marker) { position: absolute; left: -27px; top: 22px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--c); box-shadow: 0 0 0 4px var(--bg), 0 0 12px var(--c); transition: transform 0.3s var(--ease-spring); }
+  .tl-wrap :global(.tl-item:hover .tl-marker) { transform: scale(1.3); }
+  .tl-wrap :global(.tl-card) { padding: 18px 22px; border-left: 3px solid var(--c); transition: transform 0.4s var(--ease-out), box-shadow 0.3s, border-color 0.3s; }
+  .tl-wrap :global(.tl-item:hover .tl-card) { transform: translateX(4px); box-shadow: var(--shadow-hover); }
   .tl-wrap :global(.tl-top) { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.06em; }
   .tl-wrap :global(.tl-kind) { color: var(--c); text-transform: uppercase; font-weight: 600; }
   .tl-wrap :global(.tl-when) { color: var(--ink-3); }
@@ -140,5 +182,5 @@ const stats = [
   .tl-wrap :global(.tl-org) { color: var(--ink-2); margin: 0; font-size: 0.98rem; }
   .tl-wrap :global(.tl-detail) { margin: 6px 0 0; font-size: 0.95rem; }
   .tl-wrap :global(.tl-card ul) { margin: 8px 0 0; padding-left: 1.2em; color: var(--ink-2); font-size: 0.97rem; }
-  @keyframes tl-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes tl-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
 </style>

@@ -16,7 +16,7 @@ const description = 'Favourite quotes and personal reflections.';
   <section class="container section readings" aria-label="Quotes and reflections">
     {entries.length === 0 && <p class="empty">The first quote and reflection will appear here.</p>}
     {entries.map((entry) => (
-      <article>
+      <article data-reveal>
         <figure>
           <blockquote>{entry.quote}</blockquote>
           {(entry.author || entry.source) && <figcaption>{entry.author}{entry.author && entry.source && ', '}<cite>{entry.source}</cite></figcaption>}
@@ -32,11 +32,14 @@ const description = 'Favourite quotes and personal reflections.';
   article { padding-block: 2rem; overflow-wrap: anywhere; }
   article:first-child { padding-top: 0; }
   article + article { border-top: 1px solid var(--line); }
-  figure { margin: 0; padding-left: 1.25rem; border-left: 3px solid var(--violet); }
+  figure { position: relative; margin: 0; padding-left: 1.5rem; border-left: 3px solid; border-image: var(--grad) 1; }
+  figure::before { content: '\201C'; position: absolute; left: -0.6rem; top: -2.6rem; font: 700 6rem/1 var(--font-serif); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: 0.35; pointer-events: none; }
   blockquote { margin: 0; font: 500 clamp(1.35rem, 3vw, 1.9rem)/1.45 var(--font-serif); white-space: pre-line; }
   figcaption, .empty { color: var(--ink-2); }
-  figcaption { margin-top: .75rem; }
+  figcaption { margin-top: .9rem; font-family: var(--font-sans); font-size: 0.95rem; }
+  figcaption::before { content: ''; display: inline-block; width: 22px; height: 2px; margin-right: 10px; vertical-align: middle; background: var(--grad); }
   .reflection { margin-top: 1.4rem; }
-  .reflection h2 { font: 600 .95rem var(--font-sans); }
+  .reflection { padding: 1rem 1.25rem; border-radius: var(--radius-sm); background: var(--grad-soft); }
+  .reflection h2 { font: 600 .78rem var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--violet-ink); }
   .reflection p { margin: .4rem 0 0; white-space: pre-line; }
 </style>

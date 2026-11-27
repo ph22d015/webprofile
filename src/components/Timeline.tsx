@@ -5,39 +5,28 @@ type Props = { items: TimelineItem[]; labels: Record<TimelineKind, string> };
 
 export default function Timeline({ items, labels }: Props) {
   const kinds = Object.keys(labels) as TimelineKind[];
-  const [active, setActive] = useState<Set<TimelineKind>>(new Set(kinds));
+  // One category at a time; null = everything. Clicking the selected category again goes back to everything.
+  const [selected, setSelected] = useState<TimelineKind | null>(null);
 
   const shown = useMemo(
-    () => items.filter((i) => active.has(i.kind)).sort((a, b) => b.start.localeCompare(a.start)),
-    [items, active],
+    () => items.filter((i) => !selected || i.kind === selected).sort((a, b) => b.start.localeCompare(a.start)),
+    [items, selected],
   );
-
-  const toggle = (k: TimelineKind) =>
-    setActive((prev) => {
-      const next = new Set(prev);
-      if (next.has(k) && next.size === 1) return new Set(kinds); // never leave the list empty
-      next.has(k) ? next.delete(k) : next.add(k);
-      return next;
-    });
-
-  const only = (k: TimelineKind) => setActive(new Set([k]));
   const counts = useMemo(() => Object.fromEntries(kinds.map((k) => [k, items.filter((i) => i.kind === k).length])), [items]);
 
   return (
     <div className="tl">
       <div className="tl-filters" role="group" aria-label="Show timeline categories">
-        <button type="button" className={`tl-all ${active.size === kinds.length ? 'on' : ''}`} onClick={() => setActive(new Set(kinds))}>
+        <button type="button" className={`tl-all ${selected === null ? 'on' : ''}`} aria-pressed={selected === null} onClick={() => setSelected(null)}>
           Everything
         </button>
         {kinds.map((k) => (
           <button
             key={k}
             type="button"
-            className={`tl-chip k-${k} ${active.has(k) ? 'on' : ''}`}
-            aria-pressed={active.has(k)}
-            onClick={() => toggle(k)}
-            onDoubleClick={() => only(k)}
-            title="Click to toggle, double-click to show only this"
+            className={`tl-chip k-${k} ${selected === k ? 'on' : ''}`}
+            aria-pressed={selected === k}
+            onClick={() => setSelected(selected === k ? null : k)}
           >
             <span className="dot" aria-hidden="true" /> {labels[k]} <span className="n">{counts[k]}</span>
           </button>

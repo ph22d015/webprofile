@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Papa from 'papaparse';
-import { performErfFit, performGaussianFit } from '@/lib/knife-edge';
+import { parseScan, performErfFit, performGaussianFit, type Scan } from '@/lib/knife-edge';
 import {
   drawPlot,
   exportBeamReport,
@@ -9,37 +8,6 @@ import {
 } from '@/lib/beam-report';
 import '@/styles/laser-spot.css';
 
-type Scan = { name: string; x: number[]; y: number[] };
-function parseScan(text: string, name: string): Scan {
-  const parsed = Papa.parse<string[]>(text, { skipEmptyLines: 'greedy' });
-  const rows = parsed.data;
-  if (
-    rows.length &&
-    rows[0].slice(0, 2).every((s) => s.trim() && !Number.isFinite(Number(s)))
-  )
-    rows.shift();
-  const points = rows
-    .map((r, i) => {
-      if (
-        r.length < 2 ||
-        r.slice(0, 2).some((s) => !s.trim() || !Number.isFinite(Number(s)))
-      )
-        throw new Error(
-          'Check position and power in data row ' + (i + 1) + '.',
-        );
-      return [Number(r[0]), Number(r[1])];
-    })
-    .sort((a, b) => a[0] - b[0]);
-  if (points.length < 5)
-    throw new Error('Both fits need at least five distinct positions.');
-  if (points.some(([x], i) => i > 0 && x === points[i - 1][0]))
-    throw new Error(
-      'Duplicate positions prevent differentiation. Average repeated measurements at each position first.',
-    );
-  if (points.every((p) => p[1] === points[0][1]))
-    throw new Error('The power is constant across this scan.');
-  return { name, x: points.map((p) => p[0]), y: points.map((p) => p[1]) };
-}
 function Plot({ plot }: { plot: BeamPlot }) {
   const ref = useRef<HTMLCanvasElement>(null),
     [read, setRead] = useState('');

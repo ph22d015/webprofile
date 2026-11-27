@@ -33,7 +33,7 @@ export default defineConfig({
   },
   security: {
     // Astro hashes every script/style it emits and writes a <meta> CSP per page.
-    // frame-ancestors, HSTS etc. cannot live in <meta>; they are in public/_headers.
+    // frame-ancestors, HSTS etc. need real HTTP headers, which GitHub Pages cannot send.
     csp: {
       algorithm: 'SHA-256',
       directives: [

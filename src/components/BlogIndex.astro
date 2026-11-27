@@ -3,10 +3,10 @@ import Base from '@/layouts/Base.astro';
 import PostCard from '@/components/PostCard.astro';
 import { slugify, type Post } from '@/lib/posts';
 import { sitePath } from '@/consts';
+import { CATEGORIES as categories } from '@/content.config';
 
-interface Props { posts: Post[]; allTags: string[]; activeTag?: string; activeCategory?: string; heading: string; intro: string }
+interface Props { posts: Post[]; allTags: string[]; activeTag?: string; heading: string; intro: string }
 const { posts, allTags, activeTag, heading, intro } = Astro.props;
-const categories = ['Lab Notes', 'Research', 'Life'] as const;
 ---
 <Base title={heading} description={intro}>
   <header class="page-hero">
@@ -61,8 +61,9 @@ const categories = ['Lab Notes', 'Research', 'Life'] as const;
 <style>
   .filters { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between; margin-bottom: 28px; }
   .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
-  .seg button { border: 0; background: transparent; padding: 6px 16px; border-radius: 999px; cursor: pointer; color: var(--ink-2); font-size: 0.95rem; }
-  .seg button.active { background: var(--grad); color: #fff; }
+  .seg button { border: 0; background: transparent; padding: 7px 18px; border-radius: 999px; cursor: pointer; color: var(--ink-2); font: 0.95rem var(--font-sans); transition: color 0.2s, background-color 0.2s; }
+  .seg button:hover { color: var(--ink); }
+  .seg button.active { background: var(--grad); color: #fff; box-shadow: 0 4px 14px rgb(139 92 246 / 0.35); }
   .tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
   .tag-list a { text-decoration: none; }
   .tag-list a:hover, .tag-list a.on { border-color: var(--violet); color: var(--violet-ink); }

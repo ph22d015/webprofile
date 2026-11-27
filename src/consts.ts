@@ -17,15 +17,24 @@ export const sitePath = (path: string): string => {
 export const { site: SITE, email: EMAIL } = identity;
 
 export const SOCIAL: Partial<Record<'github' | 'scholar' | 'researchgate' | 'orcid' | 'linkedin', string>> = identity.social;
+// Profile links shown in the footer and on the About page; entries with an empty href are hidden.
+export const PROFILES = [
+  { href: SOCIAL.linkedin, label: 'LinkedIn', icon: 'linkedin' },
+  { href: SOCIAL.scholar, label: 'Google Scholar', icon: 'scholar' },
+  { href: SOCIAL.researchgate, label: 'ResearchGate', icon: 'researchgate' },
+  { href: SOCIAL.orcid, label: 'ORCID', icon: 'orcid' },
+  { href: SOCIAL.github, label: 'GitHub', icon: 'github' },
+] as const;
+
 export const NAV = [
-  { href: '/', label: 'Home' },
-  { href: '/about/', label: 'About' },
-  { href: '/research/', label: 'Research' },
-  { href: '/publications/', label: 'Publications' },
-  { href: '/cv/', label: 'CV' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/quotes/', label: 'Quotes' },
-  { href: '/gallery/', label: 'Gallery' },
+  { href: '/', label: 'Home', desc: 'Home' },
+  { href: '/about/', label: 'About', desc: 'About me, languages, hobbies and contact' },
+  { href: '/research/', label: 'Research', desc: 'Research themes, expertise and interactive thin-film demo' },
+  { href: '/publications/', label: 'Publications', desc: 'Journal and conference publications with BibTeX' },
+  { href: '/cv/', label: 'CV', desc: 'Education, research, teaching, conferences and awards' },
+  { href: '/blog/', label: 'Blog', desc: 'All blog posts' },
+  { href: '/quotes/', label: 'Quotes', desc: 'Favourite quotes and personal reflections' },
+  { href: '/gallery/', label: 'Gallery', desc: 'Photography' },
 ] as const;
 
 // Put a phone-free PDF of your CV at public/cv/Sourav_Mondal_CV.pdf to enable the download button.
