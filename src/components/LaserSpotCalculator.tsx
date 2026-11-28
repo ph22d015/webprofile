@@ -227,10 +227,10 @@ export default function LaserSpotCalculator() {
             type="file"
             accept=".csv,text/csv"
             onChange={async (ev) => {
-              const file = ev.target.files?.[0];
+              const file = ev.currentTarget.files?.[0];
               if (!file) return;
               const ticket = ++upload.current;
-              ev.target.value = '';
+              ev.currentTarget.value = '';
               setScan(null);
               setError('');
               try {
@@ -245,11 +245,11 @@ export default function LaserSpotCalculator() {
         </label>
         <label>
           Position unit
-          <input value={xu} onChange={(ev) => setX(ev.target.value)} />
+          <input value={xu} onChange={(ev) => setX(ev.currentTarget.value)} />
         </label>
         <label>
           Power unit
-          <input value={yu} onChange={(ev) => setY(ev.target.value)} />
+          <input value={yu} onChange={(ev) => setY(ev.currentTarget.value)} />
         </label>
         <label>
           SG window
@@ -258,7 +258,7 @@ export default function LaserSpotCalculator() {
             min="3"
             step="2"
             value={win}
-            onChange={(ev) => setWin(ev.target.value)}
+            onChange={(ev) => setWin(ev.currentTarget.value)}
           />
         </label>
         <label>
@@ -267,7 +267,7 @@ export default function LaserSpotCalculator() {
             type="number"
             min="1"
             value={poly}
-            onChange={(ev) => setPoly(ev.target.value)}
+            onChange={(ev) => setPoly(ev.currentTarget.value)}
           />
         </label>
       </div>

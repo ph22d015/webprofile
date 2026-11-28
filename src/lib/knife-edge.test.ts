@@ -34,6 +34,9 @@ test('scan file: header and quotes dropped, rows sorted by position, bad files r
   const scan = parseScan('"Position (mm)","Power (mW)"\n0.3;5\n0.1;1\n0.2,3\n0.5\t9\n0.4 7\n', 'scan.csv');
   assert.deepEqual(scan.x, [0.1, 0.2, 0.3, 0.4, 0.5]);
   assert.deepEqual(scan.y, [1, 3, 5, 7, 9]);
+  const eu = parseScan('Position;Power\n0,1;1,5\n0,2;2,5\n0,3;3,5\n0,4;4,5\n0,5;5,5\n', 'eu.csv');
+  assert.deepEqual(eu.x, [0.1, 0.2, 0.3, 0.4, 0.5]);
+  assert.deepEqual(eu.y, [1.5, 2.5, 3.5, 4.5, 5.5]);
   assert.throws(() => parseScan('0,1\n1,2\n1,3\n2,4\n3,5', 'dup.csv'), /Duplicate positions/);
   assert.throws(() => parseScan('0,1\n1,1\n2,1\n3,1\n4,1', 'flat.csv'), /constant/);
   assert.throws(() => parseScan('0,1\n1,2', 'short.csv'), /five distinct/);

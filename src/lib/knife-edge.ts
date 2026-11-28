@@ -200,11 +200,17 @@ export function performGaussianFit(
 // Reads an uploaded knife-edge scan (position, power) file.
 export type Scan = { name: string; x: number[]; y: number[] };
 export function parseScan(text: string, name: string): Scan {
-  // Same cell split as OptiStack's dispersion tables: comma, semicolon, tab or spaces; quotes dropped.
+  // Cells split on comma, semicolon, tab or spaces; quotes dropped.
   const rows = text
     .split(/\r?\n/)
     .filter((line) => line.trim())
-    .map((line) => line.replace(/"/g, '').trim().split(/\s*[,;\t]\s*| +/));
+    .map((line) => {
+      line = line.replace(/"/g, '').trim();
+      // Semicolon-separated files (European Excel) write decimals with a comma: "0,10;1,23".
+      return line.includes(';')
+        ? line.replace(/,/g, '.').split(/\s*;\s*/)
+        : line.split(/\s*[,\t]\s*| +/);
+    });
   if (
     rows.length &&
     rows[0].slice(0, 2).every((s) => s.trim() && !Number.isFinite(Number(s)))

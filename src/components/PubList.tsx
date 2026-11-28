@@ -63,7 +63,7 @@ export default function PubList({ pubs, myNames }: Props) {
         </div>
         <label className="pub-search">
           <span className="sr-only">Filter publications</span>
-          <input type="search" placeholder="Filter by title, venue, topic…" value={q} maxLength={80} onChange={(e) => setQ(e.target.value)} />
+          <input type="search" placeholder="Filter by title, venue, topic…" value={q} maxLength={80} onChange={(e) => setQ(e.currentTarget.value)} />
         </label>
       </div>
 

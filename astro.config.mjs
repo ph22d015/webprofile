@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+import preact from '@astrojs/preact';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import remarkMath from 'remark-math';
@@ -16,7 +16,8 @@ export default defineConfig({
   base: '/webprofile',
   trailingSlash: 'ignore',
   output: 'static',
-  integrations: [react(), mdx(), sitemap()],
+  // compat keeps React semantics (e.g. onChange per keystroke) at ~10 KB instead of React's ~200 KB.
+  integrations: [preact({ compat: true }), mdx(), sitemap()],
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   build: {
     // All CSS ships as external files so the CSP never needs 'unsafe-inline'.

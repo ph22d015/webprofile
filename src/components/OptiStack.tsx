@@ -108,7 +108,7 @@ function Numeric({
         type="number"
         step="any"
         value={value}
-        onChange={(e) => set(e.target.value)}
+        onChange={(e) => set(e.currentTarget.value)}
       />
     </label>
   );
@@ -188,6 +188,17 @@ export default function OptiStack() {
         : number(range.maxA, 'maximum angle', 0, 89.9);
       if (minWavelength >= maxWavelength || minAngle >= maxAngle)
         throw new Error('The sweep end must exceed its start.');
+      const fixedWavelength = waveSweep ? 1 : number(range.wave, 'fixed wavelength', 1);
+      const [lo, hi] = waveSweep ? [minWavelength, maxWavelength] : [fixedWavelength, fixedWavelength];
+      // Outside its table a material keeps its end values (see interpolateNK), so say so instead of plotting it silently.
+      const used = new Set([incident, substrate, ...layers.map((l) => l.materialId)]);
+      const notes = library.flatMap(({ id, properties: p }) => {
+        if (p.type !== 'dispersive' || !used.has(id)) return [];
+        const first = p.data[0].wavelength, last = p.data[p.data.length - 1].wavelength;
+        if (lo >= first && hi <= last) return [];
+        const name = materials.find((m) => m.id === id)!.name;
+        return [`${name}: n, k held constant outside its table (${first}–${last} nm).`];
+      });
       const { data } = calculateOpticalResponse({
         sweepType: sweep,
         polarization: pol,
@@ -205,9 +216,9 @@ export default function OptiStack() {
         angleOfIncidence: waveSweep
           ? number(range.angle, 'fixed angle', 0, 89.9)
           : 0,
-        wavelength: waveSweep ? 1 : number(range.wave, 'fixed wavelength', 1),
+        wavelength: fixedWavelength,
       });
-      return { data };
+      return { data, notes };
     } catch (e) {
       return {
         error: e instanceof Error ? e.message : 'Check the input values.',
@@ -251,7 +262,7 @@ export default function OptiStack() {
             <select
               value={selected}
               onChange={(e) => {
-                select(e.target.value);
+                select(e.currentTarget.value);
                 setFileError('');
               }}
             >
@@ -288,7 +299,7 @@ export default function OptiStack() {
             Name
             <input
               value={active.name}
-              onChange={(e) => update(selected, { name: e.target.value })}
+              onChange={(e) => update(selected, { name: e.currentTarget.value })}
             />
           </label>
           <label>
@@ -296,7 +307,7 @@ export default function OptiStack() {
             <select
               value={active.mode}
               onChange={(e) =>
-                update(selected, { mode: e.target.value as Material['mode'] })
+                update(selected, { mode: e.currentTarget.value as Material['mode'] })
               }
             >
               <option value="constant">Constant n, k</option>
@@ -327,7 +338,7 @@ export default function OptiStack() {
                 value={active.table}
                 placeholder={'1000, 3.9, 0.05\n2000, 3.8, 0.04'}
                 onChange={(e) => {
-                  update(selected, { table: e.target.value });
+                  update(selected, { table: e.currentTarget.value });
                   setFileError('');
                 }}
               />
@@ -338,8 +349,8 @@ export default function OptiStack() {
                 type="file"
                 accept=".csv,.txt,.dat"
                 onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  e.target.value = '';
+                  const file = e.currentTarget.files?.[0];
+                  e.currentTarget.value = '';
                   if (file)
                     try {
                       const table = await file.text();
@@ -376,7 +387,7 @@ export default function OptiStack() {
           Incident medium
           <select
             value={incident}
-            onChange={(e) => setIncident(e.target.value)}
+            onChange={(e) => setIncident(e.currentTarget.value)}
           >
             {options}
           </select>
@@ -391,7 +402,7 @@ export default function OptiStack() {
                   setLayers(
                     layers.map((l) =>
                       l.id === layer.id
-                        ? { ...l, materialId: e.target.value }
+                        ? { ...l, materialId: e.currentTarget.value }
                         : l,
                     ),
                   )
@@ -432,7 +443,7 @@ export default function OptiStack() {
           Substrate
           <select
             value={substrate}
-            onChange={(e) => setSubstrate(e.target.value)}
+            onChange={(e) => setSubstrate(e.currentTarget.value)}
           >
             {options}
           </select>
@@ -454,7 +465,7 @@ export default function OptiStack() {
             Variable
             <select
               value={sweep}
-              onChange={(e) => setSweep(e.target.value as SweepParameter)}
+              onChange={(e) => setSweep(e.currentTarget.value as SweepParameter)}
             >
               <option value="wavelength">Wavelength</option>
               <option value="angle">Incidence angle</option>
@@ -464,7 +475,7 @@ export default function OptiStack() {
             Polarization
             <select
               value={pol}
-              onChange={(e) => setPol(e.target.value as 'TE' | 'TM')}
+              onChange={(e) => setPol(e.currentTarget.value as 'TE' | 'TM')}
             >
               <option>TE</option>
               <option>TM</option>
@@ -494,6 +505,7 @@ export default function OptiStack() {
       <section>
         <h3>Optical response</h3>
         {result.error && <p role="status">{result.error}</p>}
+        {result.notes?.map((n) => <p role="status" key={n}>{n}</p>)}
         {result.data && point && (
           <>
             <Chart
@@ -511,7 +523,7 @@ export default function OptiStack() {
                 min={0}
                 max={result.data.length - 1}
                 value={cursor}
-                onChange={(e) => setCursor(+e.target.value)}
+                onChange={(e) => setCursor(+e.currentTarget.value)}
               />
             </label>
             <output>
